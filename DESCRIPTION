@@ -1,0 +1,31 @@
+Package: demlife
+Type: Package
+Title: Life Tables
+Version: 0.0.0.9000
+Author: John Bryant [aut, cre],
+    Kate Peterssen [aut]
+Maintainer: John Bryant <john.bryant@stats.govt.nz>
+Authors@R: c(person(given = "John",
+                    family = "Bryant",
+	            email = "john.bryant@stats.govt.nz",
+	    	    role = c("cre", "aut")),
+             person(given = "Kate",
+                    family = "Peterssen",
+	            email = "kate.peterssen@stats.govt.nz",
+	    	    role = "aut"))
+Description: Functions and data structures for life tables.  Depends on package
+    'dembase'. Still under development.
+Depends:
+    dembase
+License: MIT + file LICENSE
+LazyLoad: yes
+LazyData: yes
+Imports:
+    methods
+Suggests:
+    datasets,
+    demdata,
+    testthat,
+    knitr
+VignetteBuilder: knitr
+RoxygenNote: 5.0.1
