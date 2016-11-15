@@ -3,7 +3,7 @@
 
 Tools for creating life tables and extracting life table functions
 (also known as life table columns).  Uses S4 classes and methods,
-and depends on package \code{dembase}.
+and depends on package `dembase`.
 
 The package is still under development.
 
