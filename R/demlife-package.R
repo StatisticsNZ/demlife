@@ -1,13 +1,12 @@
 
 #' Functions and data structures for life tables.
 #'
-#' Tools for creating life tables and extracting life table 'functions'
-#' (also known as life table 'columns').  Uses S4 classes and methods,
+#' Tools for creating life tables and extracting life table functions
+#' (also known as life table columns).  Uses S4 classes and methods,
 #' and depends on package \code{dembase}.
 #'
 #' The package is still under development.  Future features will include
 #' \itemize{
-#'   \item Default values for 'ax'.
 #'   \item Plotting methods for life tables.
 #'   \item Multi-decrement life tables.
 #'   \item Mult-state life tables (eventually).
