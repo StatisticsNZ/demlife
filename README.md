@@ -9,7 +9,8 @@ The package is still under development.
 
 Install `dembase` from github with:
 ```{r, echo = FALSE}
-devtools::install_github("johnrbryant/demlife")
+library(devtools)
+install_github("statisticsnz/demlife")
 ```
 
 ---
