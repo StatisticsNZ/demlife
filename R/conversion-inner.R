@@ -1,5 +1,4 @@
 
-
 ## NO_TESTS
 convertLifeTableFun <- function(.Data, from, to, nx, ax, open, mA) {
     if (from == to)
@@ -217,4 +216,89 @@ ex2Lx <- function(.Data, nx, ax) {
                   (.Data[i, ] - ax[i - 1L, ] + nx[i - 1L, ])) * lx[i - 1L, ]
   mA <- 1 / .Data[nrow(.Data), ]
   lx2Lx(.Data = lx, nx = nx, ax = ax, open = TRUE, mA = mA)
+}
+
+## HAS_TESTS
+## assume that 'mx' and 'ax' have passed
+## validity tests for LifeTable
+makeLx <- function(mx, ax) {
+    metadata <- mx@metadata
+    DimScales <- DimScales(metadata, use.names = FALSE)
+    DimScale.age <- DimScales[[1L]]
+    dv.age <- DimScale.age@dimvalues
+    nx <- diff(dv.age)
+    mx <- matrix(mx@.Data,
+                 nrow = nrow(mx@.Data))
+    ax <- matrix(ax@.Data,
+                 nrow = nrow(ax@.Data))
+    nAge <- nrow(mx)
+    nOther <- ncol(mx)
+    .Data.ans <- makeLxInner(mx = mx,
+                             ax = ax,
+                             nx = nx,
+                             nAge = nAge,
+                             nOther = nOther,
+                             useC = FALSE) ## change to TRUE when C version finished
+    .Data.ans <- array(.Data.ans,
+                       dim = dim(metadata),
+                       dimnames = dimnames(metadata))
+    new("Counts",
+        .Data = .Data.ans,
+        metadata = metadata)
+}
+
+## READY_TO_TRANSLATE
+## HAS_TESTS
+makeLxInner <- function(mx, ax, nx, nAge, nOther, useC = FALSE) {
+    ## mx
+    stopifnot(is.matrix(mx))
+    stopifnot(is.double(mx))
+    stopifnot(!any(is.na(mx)))
+    stopifnot(all(mx >= 0))
+    ## ax
+    stopifnot(is.matrix(ax))
+    stopifnot(is.double(ax))
+    stopifnot(!any(is.na(ax)))
+    stopifnot(all(ax >= 0))
+    ## nx
+    stopifnot(is.double(nx))
+    stopifnot(!any(is.na(nx)))
+    stopifnot(all(nx >= 0))
+    ## nAge
+    stopifnot(is.integer(nAge))
+    stopifnot(identical(length(nAge), 1L))
+    stopifnot(!is.na(nAge))
+    stopifnot(nAge >= 2L)
+    ## nOther
+    stopifnot(is.integer(nOther))
+    stopifnot(identical(length(nOther), 1L))
+    stopifnot(!is.na(nOther))
+    stopifnot(nOther >= 1L)
+    ## mx, nAge, nOther
+    stopifnot(identical(dim(mx), c(nAge, nOther)))
+    ## ax, nAge, nOther
+    stopifnot(identical(dim(ax), c(nAge, nOther)))
+    if (useC) {
+        .Call(makeLxInner_R, mx, ax, nx, nAge, nOther)
+    }
+    else {
+        ans <- double(length = nAge * nOther)
+        for (j in seq_len(nOther)) {
+            lx.i <- 1
+            for (i in seq_len(nAge - 1L)) {
+                i.ans <- i + (j - 1L) * nAge
+                nx.i <- nx[i]
+                mx.i <- mx[i.ans]
+                ax.i <- ax[i.ans]
+                qx.i <- nx.i * mx.i / (1 + (nx.i - ax.i) * mx.i)
+                lx.iplus1 <- lx.i * (1 - qx.i)
+                ans[i.ans] <- lx.iplus1 * nx.i + (lx.i - lx.iplus1) * ax.i
+                lx.i <- lx.iplus1
+            }
+            i.ans <- j * nAge
+            mx.i <- mx[i.ans]
+            ans[i.ans] <- lx.i / mx.i
+        }
+        ans
+    }
 }

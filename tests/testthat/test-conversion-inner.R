@@ -238,3 +238,276 @@ test_that("px2qx works", {
 ##                    dimnames = list(age = c(0, "1-4", paste(seq(5,80,5),
 ##                                        seq(9,84,5), sep="-"), "85+"),
 ##                        sex = "Female")))
+
+test_that("makeLx works", {
+    ## data from Preston et al, 2000, Demography, Box 3.1
+    mx <- c(0.008743,
+            0.000370,
+            0.000153,
+            0.000193,
+            0.000976,
+            0.001285,
+            0.001135,
+            0.001360,
+            0.001882,
+            0.002935,
+            0.004849,
+            0.007133,
+            0.011263,
+            0.018600,
+            0.028382,
+            0.041238,
+            0.071634,
+            0.112324,
+            0.190585)
+    ax <- c(0.068,
+            1.626,
+            2.500,
+            3.143,
+            2.724,
+            2.520,
+            2.481,
+            2.601,
+            2.701,
+            2.663,
+            2.698,
+            2.676,
+            2.645,
+            2.624,
+            2.619,
+            2.593,
+            2.518,
+            2.423,
+            5.247)
+    Lx <- c(99192,
+            396183,
+            494741,
+            494375,
+            492980,
+            490106,
+            487127,
+            484175,
+            480384,
+            474686,
+            465777,
+            452188,
+            432096,
+            401480,
+            357713,
+            301224,
+            228404,
+            145182,
+            110889)
+    nx <- c(1, 4, rep(5, 16), Inf)
+    nAge <- 19L
+    age.levels <- c("0", "1-4", paste(seq(5, 80, 5), seq(9, 84, 5), sep = "-"), "85+")
+    ## vector
+    mx1 <- array(mx,
+                 dim = 19,
+                 dimnames = list(age = age.levels))
+    ax1 <- array(ax, 
+                 dim = 19,
+                 dimnames = list(age = age.levels))
+    Lx1 <- array(Lx / 100000,
+                 dim = 19,
+                 dimnames = list(age = age.levels))
+    mx1 <- Values(mx1)
+    ax1 <- Values(ax1)
+    Lx1 <- Counts(Lx1)
+    ans.obtained <- makeLx(mx = mx1,
+                           ax = ax1)
+    ans.expected <- Lx1
+    expect_equal(ans.obtained, ans.expected, tol = 0.001)
+    ## matrix
+    mx2 <- array(mx,
+                 dim = c(19, 2),
+                 dimnames = list(age = age.levels,
+                                 sex = c("f", "m")))
+    ax2 <- array(ax, 
+                 dim = c(19, 2),
+                 dimnames = list(age = age.levels,
+                                 sex = c("f", "m")))
+    Lx2 <- array(Lx / 100000,
+                 dim = c(19, 2),
+                 dimnames = list(age = age.levels,
+                                 sex = c("f", "m")))
+    mx2 <- Values(mx2)
+    ax2 <- Values(ax2)
+    Lx2 <- Counts(Lx2)
+    ans.obtained <- makeLx(mx = mx2,
+                           ax = ax2)
+    ans.expected <- Lx2
+    expect_equal(ans.obtained, ans.expected, tol = 0.001)
+}
+
+test_that("R version of makeLxInner works", {
+    ## data from Preston et al, 2000, Demography, Box 3.1
+    mx <- c(0.008743,
+            0.000370,
+            0.000153,
+            0.000193,
+            0.000976,
+            0.001285,
+            0.001135,
+            0.001360,
+            0.001882,
+            0.002935,
+            0.004849,
+            0.007133,
+            0.011263,
+            0.018600,
+            0.028382,
+            0.041238,
+            0.071634,
+            0.112324,
+            0.190585)
+    ax <- c(0.068,
+            1.626,
+            2.500,
+            3.143,
+            2.724,
+            2.520,
+            2.481,
+            2.601,
+            2.701,
+            2.663,
+            2.698,
+            2.676,
+            2.645,
+            2.624,
+            2.619,
+            2.593,
+            2.518,
+            2.423,
+            5.247)
+    Lx <- c(99192,
+            396183,
+            494741,
+            494375,
+            492980,
+            490106,
+            487127,
+            484175,
+            480384,
+            474686,
+            465777,
+            452188,
+            432096,
+            401480,
+            357713,
+            301224,
+            228404,
+            145182,
+            110889)
+    nx <- c(1, 4, rep(5, 16), Inf)
+    nAge <- 19L
+    ## 19x1 matrix
+    mx1 <- matrix(mx, nrow = 19)
+    ax1 <- matrix(ax, nrow = 19)
+    Lx1 <- Lx / 100000
+    nOther1 <- 1L
+    ans.obtained <- makeLxInner(mx = mx1,
+                                ax = ax1,
+                                nx = nx,
+                                nAge = nAge,
+                                nOther = nOther1)
+    ans.expected <- Lx1
+    expect_equal(ans.obtained, ans.expected, tol = 0.001)
+    ## 19x2 matrix
+    mx2 <- matrix(mx, nrow = 19, ncol = 2)
+    ax2 <- matrix(ax, nrow = 19, ncol = 2)
+    Lx2 <- rep(Lx / 100000, 2)
+    nOther2 <- 2L
+    ans.obtained <- makeLxInner(mx = mx2,
+                                ax = ax2,
+                                nx = nx,
+                                nAge = nAge,
+                                nOther = nOther2)
+    ans.expected <- Lx2
+    expect_equal(ans.obtained, ans.expected, tol = 0.001)
+}
+
+
+
+
+test_that("R and C versions of makeLxInner give same answer", {
+    ## data from Preston et al, 2000, Demography, Box 3.1
+    mx <- c(0.008743,
+            0.000370,
+            0.000153,
+            0.000193,
+            0.000976,
+            0.001285,
+            0.001135,
+            0.001360,
+            0.001882,
+            0.002935,
+            0.004849,
+            0.007133,
+            0.011263,
+            0.018600,
+            0.028382,
+            0.041238,
+            0.071634,
+            0.112324,
+            0.190585)
+    ax <- c(0.068,
+            1.626,
+            2.500,
+            3.143,
+            2.724,
+            2.520,
+            2.481,
+            2.601,
+            2.701,
+            2.663,
+            2.698,
+            2.676,
+            2.645,
+            2.624,
+            2.619,
+            2.593,
+            2.518,
+            2.423,
+            5.247)
+    nx <- c(1, 4, rep(5, 16), Inf)
+    nAge <- 19L
+    ## 19x1 matrix
+    mx1 <- matrix(mx, nrow = 19)
+    ax1 <- matrix(ax, nrow = 19)
+    Lx1 <- Lx / 100000
+    nOther1 <- 1L
+    ans.R <- makeLxInner(mx = mx1,
+                                ax = ax1,
+                                nx = nx,
+                                nAge = nAge,
+                         nOther = nOther1,
+                         useC = FALSE)
+    ans.C <- makeLxInner(mx = mx1,
+                                ax = ax1,
+                                nx = nx,
+                                nAge = nAge,
+                         nOther = nOther1,
+                         useC = TRUE)
+    if (test.identity)
+        expect_identical(ans.R, ans.C)
+    else
+        expect_equal(ans.R, ans.C)
+    ## 19x2 matrix
+    mx2 <- matrix(mx, nrow = 19, ncol = 2)
+    ax2 <- matrix(ax, nrow = 19, ncol = 2)
+    Lx2 <- rep(Lx / 100000, 2)
+    nOther2 <- 2L
+    ans.obtained <- makeLxInner(mx = mx2,
+                                ax = ax2,
+                                nx = nx,
+                                nAge = nAge,
+                                nOther = nOther2)
+    ans.expected <- Lx2
+    expect_equal(ans.obtained, ans.expected, tol = 0.001)
+})
+
+                            
+        
+     
+       

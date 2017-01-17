@@ -3,3 +3,9 @@
 *~
 *.Rhistory
 *.DS_Store
+*.o
+*.so
+src-i386
+src-x86_64
+symbols.rds
+*.dll
