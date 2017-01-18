@@ -341,6 +341,7 @@ test_that("makeLx works", {
 }
 
 test_that("R version of makeLxInner works", {
+    makeLxInner <- demlife:::makeLxInner
     ## data from Preston et al, 2000, Demography, Box 3.1
     mx <- c(0.008743,
             0.000370,
@@ -425,12 +426,13 @@ test_that("R version of makeLxInner works", {
                                 nOther = nOther2)
     ans.expected <- Lx2
     expect_equal(ans.obtained, ans.expected, tol = 0.001)
-}
+})
 
 
 
 
 test_that("R and C versions of makeLxInner give same answer", {
+    makeLxInner <- demlife:::makeLxInner
     ## data from Preston et al, 2000, Demography, Box 3.1
     mx <- c(0.008743,
             0.000370,
@@ -470,6 +472,25 @@ test_that("R and C versions of makeLxInner give same answer", {
             2.518,
             2.423,
             5.247)
+    Lx <- c(99192,
+            396183,
+            494741,
+            494375,
+            492980,
+            490106,
+            487127,
+            484175,
+            480384,
+            474686,
+            465777,
+            452188,
+            432096,
+            401480,
+            357713,
+            301224,
+            228404,
+            145182,
+            110889)
     nx <- c(1, 4, rep(5, 16), Inf)
     nAge <- 19L
     ## 19x1 matrix
