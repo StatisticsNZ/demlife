@@ -7,7 +7,7 @@ and depends on package `dembase`.
 
 The package is still under development.
 
-Install `dembase` from github with:
+Install `demlife` from github with:
 ```{r, echo = FALSE}
 library(devtools)
 install_github("statisticsnz/demlife")
