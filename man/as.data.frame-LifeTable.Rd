@@ -7,7 +7,7 @@
 \alias{as.data.frame.LifeTable}
 \title{Coerce a life table to a data frame.}
 \usage{
-\method{as.data.frame}{LifeTable}(x, row.names = NULL, optional = FALSE,
+as.data.frame.LifeTable(x, row.names = NULL, optional = FALSE,
   stringsAsFactors = default.stringsAsFactors(), responseName = "value",
   ...)
 

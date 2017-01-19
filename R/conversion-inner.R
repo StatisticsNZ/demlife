@@ -247,7 +247,7 @@ makeLx <- function(mx, ax) {
         metadata = metadata)
 }
 
-## READY_TO_TRANSLATE
+## TRANSLATED
 ## HAS_TESTS
 makeLxInner <- function(mx, ax, nx, nAge, nOther, useC = FALSE) {
     ## mx

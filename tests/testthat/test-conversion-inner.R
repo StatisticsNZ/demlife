@@ -428,9 +428,6 @@ test_that("R version of makeLxInner works", {
     expect_equal(ans.obtained, ans.expected, tol = 0.001)
 })
 
-
-
-
 test_that("R and C versions of makeLxInner give same answer", {
     makeLxInner <- demlife:::makeLxInner
     ## data from Preston et al, 2000, Demography, Box 3.1
@@ -527,8 +524,4 @@ test_that("R and C versions of makeLxInner give same answer", {
     ans.expected <- Lx2
     expect_equal(ans.obtained, ans.expected, tol = 0.001)
 })
-
                             
-        
-     
-       

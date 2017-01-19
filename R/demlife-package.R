@@ -13,8 +13,9 @@
 #' }
 #'
 #' @docType package
-#' @name dembase
+#' @name demlife
 #' @importFrom dembase dimtypes
 #' @import methods
+#' @useDynLib demlife, .registration = TRUE
 NULL
 
