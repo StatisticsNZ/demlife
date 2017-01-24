@@ -3,6 +3,73 @@ context("helper-functions")
 n.test <- 5
 test.identity <- FALSE
 
+test_that("addTotalCategory works", {
+    addTotalCategory <- demlife:::addTotalCategory
+    makeLx <- demlife:::makeLx
+    ## capitals in labels
+    al <- demdata::afghan.life
+    al <- Values(al)
+    mx <- subarray(al,
+                   subarray = (fun == "mx") & (time == "2001-2005"))
+    ax <- subarray(al,
+                   subarray = (fun == "ax") & (time == "2001-2005"))
+    ans.obtained <- addTotalCategory(mx = mx,
+                                     ax = ax)
+    mx.tmp <- mx
+    dimtypes(mx.tmp)[2] <- "state"
+    ax.tmp <- ax
+    dimtypes(ax.tmp)[2] <- "state"
+    ans.expected <- list(mx = dbind(mx.tmp,
+                                    Total = collapseDimension(mx,
+                                                              dimension = "sex",
+                                                              weights = makeLx(mx, ax)),
+                                    along = "sex"),
+                         ax = dbind(ax.tmp,
+                                    Total = collapseDimension(ax,
+                                                              dimension = "sex",
+                                                              weights = makeLx(mx, ax)),
+                                    along = "sex"))
+    expect_identical(ans.obtained, ans.expected)
+    ## no capitals in labels
+    al <- demdata::afghan.life
+    dimnames(al)$sex <- tolower(dimnames(al)$sex)
+    al <- Values(al)
+    mx <- subarray(al,
+                   subarray = (fun == "mx") & (time == "2001-2005"))
+    ax <- subarray(al,
+                   subarray = (fun == "ax") & (time == "2001-2005"))
+    ans.obtained <- addTotalCategory(mx = mx,
+                                     ax = ax)
+    mx.tmp <- mx
+    dimtypes(mx.tmp)[2] <- "state"
+    ax.tmp <- ax
+    dimtypes(ax.tmp)[2] <- "state"
+    ans.expected <- list(mx = dbind(mx.tmp,
+                                    total = collapseDimension(mx,
+                                                              dimension = "sex",
+                                                              weights = makeLx(mx, ax)),
+                                    along = "sex"),
+                         ax = dbind(ax.tmp,
+                                    total = collapseDimension(ax,
+                                                              dimension = "sex",
+                                                              weights = makeLx(mx, ax)),
+                                    along = "sex"))
+    expect_identical(ans.obtained, ans.expected)
+    ## no sex dimension
+    al <- demdata::afghan.life
+    al <- Values(al)
+    mx <- subarray(al,
+                   subarray = (fun == "mx") & (time == "2001-2005"))
+    ax <- subarray(al,
+                   subarray = (fun == "ax") & (time == "2001-2005"))
+    dimtypes(mx)[2] <- "state"
+    dimtypes(ax)[2] <- "state"
+    ans.obtained <- addTotalCategory(mx = mx,
+                                     ax = ax)
+    ans.expected <- list(mx = mx, ax = ax)
+    expect_identical(ans.obtained, ans.expected)
+})
+
 test_that("calculateLifeTableFuns works - ltFunSecond is TRUE", {
     calculateLifeTableFuns <- demlife:::calculateLifeTableFuns
     convertLifeTableFun <- demlife:::convertLifeTableFun
@@ -270,6 +337,19 @@ test_that("checkShowQuantiles works", {
     ## 'showQuantiles' has no missing values
     expect_error(checkShowQuantiles(NA),
                  "'showQuantiles' is missing")
+})
+
+test_that("checkShowTotal works", {
+    checkShowTotal <- demlife:::checkShowTotal
+    ## 'showTotal' is logical
+    expect_error(checkShowTotal("wrong"),
+                 "'showTotal' does not have type \"logical\"")
+    ## 'showTotal' has length 1
+    expect_error(checkShowTotal(logical()),
+                 "'showTotal' does not have length 1")
+    ## 'showTotal' has no missing values
+    expect_error(checkShowTotal(NA),
+                 "'showTotal' is missing")
 })
 
 test_that("getLifeTableClass works", {

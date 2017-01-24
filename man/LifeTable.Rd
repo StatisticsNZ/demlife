@@ -5,7 +5,8 @@
 \title{Create a LifeTable object.}
 \usage{
 LifeTable(mx, ax = NULL, showFun = c("mx", "qx", "dx", "lx", "Lx", "ex"),
-  radix = 1e+05, showQuantiles = TRUE, prob = c(0.025, 0.5, 0.975))
+  radix = 1e+05, showQuantiles = TRUE, showTotal = TRUE, prob = c(0.025,
+  0.5, 0.975))
 }
 \arguments{
 \item{mx}{An object of class
@@ -23,6 +24,11 @@ are printed or plotted by default}
 
 \item{showQuantiles}{Logical.  If \code{TRUE}, the default,
 quantiles are shown, rather than iterations.}
+
+\item{showTotal}{Logical.  If \code{TRUE}, the default,
+and if there is a dimension with \code{\link[dembase:dimtype]{dimtype}}
+\code{"sex"}, then a "total" category is shown, in addition to
+"female" and "male" cateogies.}
 
 \item{prob}{Values used to calculate quantiles.  Passed to function
 \code{\link[stats]{quantile}}.}
@@ -76,8 +82,8 @@ the value of \code{radix} also affects the \code{dx}, \code{Lx} and
 }
 \examples{
 mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
-               labels = c("0", "1-4", "5-9", "10+"),
-               name = "age")
+                labels = c("0", "1-4", "5-9", "10+"),
+                name = "age")
 ax <- ValuesOne(c(0.3, 1, 2.5, 2.5),
                 labels = c("0", "1-4", "5-9", "10+"),
                name = "age")

@@ -338,7 +338,7 @@ test_that("makeLx works", {
                            ax = ax2)
     ans.expected <- Lx2
     expect_equal(ans.obtained, ans.expected, tol = 0.001)
-}
+})
 
 test_that("R version of makeLxInner works", {
     makeLxInner <- demlife:::makeLxInner

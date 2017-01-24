@@ -15,6 +15,7 @@ test_that("can create object of class LifeTable", {
              showFun = c("mx", "lx", "ex"),
              radix = 100000,
              showQuantiles = TRUE,
+             showTotal = TRUE,
              prob = c(0.025, 0.5, 0.975))
     expect_true(validObject(x))
     ## three dimensions
@@ -34,6 +35,7 @@ test_that("can create object of class LifeTable", {
              showFun = c("mx", "dx", "lx", "Lx"),
              radix = 1,
              showQuantiles = TRUE,
+             showTotal = TRUE,
              prob = c(0.025, 0.5, 0.975))
     expect_true(validObject(x))
 })
@@ -55,6 +57,7 @@ test_that("validity tests for LifeTable work", {
              showFun = c("mx", "dx", "lx", "Lx"),
              radix = 1,
              showQuantiles = TRUE,
+             showTotal = TRUE,
              prob = c(0.025, 0.5, 0.975))
     ## 'mx' and 'ax' have identical metadata
     x.wrong <- x

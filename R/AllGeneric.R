@@ -299,7 +299,48 @@ setGeneric("showQuantiles<-",
                standardGeneric("showQuantiles<-"))
 
 
+#' Whether a LifeTable objects shows a "total" category for sex
+#'
+#' Extract or change the \code{showTotal} slot of an object of class
+#' \code{\linkS4class{LifeTable}}.  The \code{showTotal} slot controls
+#' whether a "total" category is shown, in addition to "female"
+#' and "male" categories.  It only has an effect if the life table
+#' has a dimension with \code{\link[dembase]{dimtype}} \code{"sex"}.
+#'
+#' \code{showTotal} does not affect the underlying data.  A
+#' \code{\linkS4class{LifeTable}} only stores "female" and "male"
+#' categories; totals are generated as needed.
+#'
+#' @param object An object of class \code{\linkS4class{LifeTable}}.
+#' @param value Logical.
+#'
+#' @return The extraction function returns \code{TRUE} or \code{FALSE},
+#' and the replacement function returns a \code{\linkS4class{LifeTable}} object
+#' with a new value for the \code{showTotal} slot.
+#'
+#' @seealso Life tables are created using function \code{\link{LifeTable}}.
+#'
+#' al <- demdata::afghan.life
+#' al <- Values(al)
+#' mx <- subarray(al,
+#'                subarray = (fun == "mx") & (time == "2001-2005"))
+#' ax <- subarray(al,
+#'                subarray = (fun == "ax") & (time == "2001-2005"))
+#' lt <- LifeTable(mx = mx, ax = ax)
+#' lt
+#' showTotal(lt)
+#' showTotal(lt) <- FALSE
+#' lt
+#' @export
+setGeneric("showTotal",
+           function(object)
+               standardGeneric("showTotal"))
 
+#' @export
+#' @rdname showTotal
+setGeneric("showTotal<-",
+           function(object, value)
+               standardGeneric("showTotal<-"))
 
 
 

@@ -81,7 +81,14 @@ as.data.frame.LifeTable <- function(x, row.names = NULL, optional = FALSE,
     radix <- x@radix
     showFun <- x@showFun
     showQuantiles <- x@showQuantiles
+    showTotal <- x@showTotal
     prob <- x@prob
+    if (showTotal) {
+        l <- addTotalCategory(mx = mx,
+                              ax = ax)
+        mx <- l$mx
+        ax <- l$ax
+    }
     dimtypes <- dimtypes(mx, use.names = FALSE)
     life.table.funs <- calculateLifeTableFuns(mx = mx,
                                               ax = ax,
@@ -109,12 +116,12 @@ as.data.frame.LifeTable <- function(x, row.names = NULL, optional = FALSE,
         }
     }
     ans <- dembase::as.data.frame(life.table.funs,
-                           row.names = row.names,
-                           optional = optional,
-                           stringsAsFactors = stringsAsFactors,
-                           responseName = responseName,
-                           direction = "long",
-                           ...)
+                                  row.names = row.names,
+                                  optional = optional,
+                                  stringsAsFactors = stringsAsFactors,
+                                  responseName = responseName,
+                                  direction = "long",
+                                  ...)
     ncol <- length(ans)
     s <- c(rev(seq_len(ncol - 1L)), ncol)
     ans[s]
@@ -364,14 +371,21 @@ setMethod("show",
               radix <- object@radix
               showFun <- object@showFun
               showQuantiles <- object@showQuantiles
+              showTotal <- object@showTotal
               prob <- object@prob
+              if (showTotal) {
+                  l <- addTotalCategory(mx = mx,
+                                        ax = ax)
+                  mx <- l$mx
+                  ax <- l$ax
+              }
               dimtypes <- dimtypes(mx, use.names = FALSE)
               dimensions <- makeDimensions(mx)
               life.table.funs <- calculateLifeTableFuns(mx = mx,
                                                         ax = ax,
                                                         radix = radix,
                                                         funs = showFun,
-                                                        ltFunSecond = TRUE)
+                                                        ltFunSecond = TRUE)              
               has.iter <- "iteration" %in% dimtypes
               if (has.iter) {
                   if (showQuantiles)
@@ -433,6 +447,24 @@ setReplaceMethod("showQuantiles",
                  function(object, value) {
                      checkShowQuantiles(value)
                      object@showQuantiles <- value
+                     object
+                 })
+
+#' @rdname showTotal
+#' @export
+setMethod("showTotal",
+          signature(object = "LifeTable"),
+          function(object) {
+              object@showTotal
+          })
+
+#' @rdname showTotal
+#' @export
+setReplaceMethod("showTotal",
+                 signature(object = "LifeTable"),
+                 function(object, value) {
+                     checkShowTotal(value)
+                     object@showTotal <- value
                      object
                  })
 

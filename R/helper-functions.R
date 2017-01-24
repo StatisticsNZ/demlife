@@ -1,4 +1,45 @@
 
+addTotalCategory <- function(mx, ax) {
+    dimtypes <- dembase::dimtypes(mx, use.names = FALSE)
+    i.sex <- match("sex", dimtypes, nomatch = 0L)
+    has.sex <- i.sex > 0L
+    if (has.sex) {
+        names <- names(mx)
+        dimnames <- dimnames(mx)
+        Lx <- makeLx(mx = mx,
+                     ax = ax)
+        mx.total <- dembase::collapseDimension(mx,
+                                               dimension = i.sex,
+                                               weights = Lx)
+        ax.total <- dembase::collapseDimension(ax,
+                                               dimension = i.sex,
+                                               weights = Lx)
+        along <- names[i.sex]
+        labels.sex <- dimnames[[i.sex]]
+        labels.use.capitals <- any(grepl("F", labels.sex))
+        dembase::dimtypes(mx)[i.sex] <- "state"
+        dembase::dimtypes(ax)[i.sex] <- "state"
+        if (labels.use.capitals) {
+            mx <- dembase::dbind(mx,
+                                 Total = mx.total,
+                                 along = along)
+            ax <- dembase::dbind(ax,
+                                 Total = ax.total,
+                                 along = along)
+        }            
+        else {
+            mx <- dembase::dbind(mx,
+                                 total = mx.total,
+                                 along = along)
+            ax <- dembase::dbind(ax,
+                                 total = ax.total,
+                                 along = along)
+        }
+    }
+    list(mx = mx, ax = ax)
+}
+
+
 ## HAS_TESTS
 calculateLifeTableFuns <- function(mx, ax, radix, funs,
                                    ltFunSecond) {
@@ -219,6 +260,22 @@ checkShowQuantiles <- function(showQuantiles) {
     NULL
 }
 
+## HAS_TESTS
+checkShowTotal <- function(showTotal) {
+    ## 'showTotal' is logical
+    if (!is.logical(showTotal))
+        stop(gettextf("'%s' does not have type \"%s\"",
+                      "showTotal", "logical"))
+    ## 'showTotal' has length 1
+    if (!identical(length(showTotal), 1L))
+        stop(gettextf("'%s' does not have length %d",
+                      "showTotal", 1L))
+    ## 'showTotal' is not missing
+    if (is.na(showTotal))
+        stop(gettextf("'%s' is missing",
+                      "showTotal"))
+    NULL
+}
 
 ## NO_TESTS
 checkLifeTableMetaData <- function(object) {

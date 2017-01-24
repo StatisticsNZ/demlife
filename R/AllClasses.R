@@ -24,6 +24,7 @@
 #' @slot showFun  A character vector with names of life table
 #' functions.
 #' @slot showQuantiles \code{TRUE} or \code{FALSE}.
+#' @slot showTotal \code{TRUE} or \code{FALSE}.
 #' @slot prob A numeric vector.
 #'
 #' @param object An object of class \code{"LifeTable"}.
@@ -38,6 +39,7 @@ setClass("LifeTable",
                    radix = "numeric",
                    showFun = "character",
                    showQuantiles = "logical",
+                   showTotal = "logical",
                    prob = "numeric"),
          validity = function(object) {
              mx <- object@mx
@@ -45,6 +47,7 @@ setClass("LifeTable",
              showFun <- object@showFun
              radix <- object@radix
              showQuantiles <- object@showQuantiles
+             showTotal <- object@showTotal
              prob <- object@prob
              dim <- dim(mx)
              dimtypes <- dimtypes(mx, use.names = FALSE)
@@ -129,6 +132,11 @@ setClass("LifeTable",
                                       error = function(e) e)
              if (methods::is(return.value, "error"))
                  return(return.value$message)
+             ## check 'showTotal'
+             return.value <- tryCatch(checkShowTotal(showTotal),
+                                      error = function(e) e)
+             if (methods::is(return.value, "error"))
+                 return(return.value$message)
              ## check 'prob'
              return.value <- tryCatch(checkAndTidyProb(prob),
                                       error = function(e) e)
@@ -142,7 +150,8 @@ setClass("SummaryLifeTable",
          slots = c(dimensions = "matrix",
                    showFun = "character",
                    radix = "character",
-                   showQuantiles = "character",
+                   showQuantiles = "logical",
+                   showTotal = "logical",
                    prob = "numeric"),
          validity = function(object) {
              dimensions <- object@dimensions
@@ -166,6 +175,11 @@ setClass("SummaryLifeTable",
                  return(return.value$message)
              ## check 'showQuantiles'
              return.value <- tryCatch(checkShowQuantiles(showQuantiles),
+                                      error = function(e) e)
+             if (methods::is(return.value, "error"))
+                 return(return.value$message)
+             ## check 'showTotal'
+             return.value <- tryCatch(checkShowTotal(showTotal),
                                       error = function(e) e)
              if (methods::is(return.value, "error"))
                  return(return.value$message)

@@ -54,6 +54,10 @@
 #' @param radix A positive number.  Defaults to 100,000.
 #' @param showQuantiles  Logical.  If \code{TRUE}, the default,
 #' quantiles are shown, rather than iterations.  
+#' @param showTotal  Logical.  If \code{TRUE}, the default,
+#' and if there is a dimension with \code{\link[dembase:dimtype]{dimtype}}
+#' \code{"sex"}, then a "total" category is shown, in addition to
+#' "female" and "male" cateogies.
 #' @param prob Values used to calculate quantiles.  Passed to function
 #' \code{\link[stats]{quantile}}.
 #'
@@ -66,8 +70,8 @@
 #'
 #' @examples
 #' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
-#'                labels = c("0", "1-4", "5-9", "10+"),
-#'                name = "age")
+#'                 labels = c("0", "1-4", "5-9", "10+"),
+#'                 name = "age")
 #' ax <- ValuesOne(c(0.3, 1, 2.5, 2.5),
 #'                 labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
@@ -83,7 +87,7 @@
 #' @export
 LifeTable <- function(mx, ax = NULL,
                       showFun = c("mx", "qx", "dx", "lx", "Lx", "ex"),
-                      radix = 100000, showQuantiles = TRUE,
+                      radix = 100000, showQuantiles = TRUE, showTotal = TRUE,
                       prob = c(0.025, 0.5, 0.975)) {
     if (!methods::is(mx, "Values"))
         stop(gettextf("'%s' has class \"%s\"",
@@ -117,6 +121,7 @@ LifeTable <- function(mx, ax = NULL,
     checkShowFun(showFun)
     radix <- checkAndTidyRadix(radix)
     checkShowQuantiles(showQuantiles)
+    checkShowTotal(showTotal)
     prob <- checkAndTidyProb(prob)
     checkLifeTableInputValues(object = mx,
                               from = "mx",
@@ -137,6 +142,7 @@ LifeTable <- function(mx, ax = NULL,
                  showFun = showFun,
                  radix = radix,
                  showQuantiles = showQuantiles,
+                 showTotal = showTotal,
                  prob = prob)
 }    
 

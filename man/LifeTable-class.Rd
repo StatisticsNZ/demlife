@@ -43,6 +43,8 @@ functions.}
 
 \item{\code{showQuantiles}}{\code{TRUE} or \code{FALSE}.}
 
+\item{\code{showTotal}}{\code{TRUE} or \code{FALSE}.}
+
 \item{\code{prob}}{A numeric vector.}
 }}
 \seealso{
