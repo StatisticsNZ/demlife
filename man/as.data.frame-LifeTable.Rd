@@ -30,7 +30,7 @@
 \item{\dots}{Additional arguments to be passed to or from methods.}
 }
 \value{
-An data.frame.
+A \code{\link[base]{data.frame}}.
 }
 \description{
 Convert a \code{\linkS4class{LifeTable}} object to a "long form" data frame.
@@ -45,20 +45,15 @@ these iterations is controlled by the \code{\link{showQuantiles}} and
 a life table as a .csv file.
 
 \code{as.data.frame} prints the dimensions of the life table in reverse
-order, with the \code{"age"} dimension last.  This is the opposite behaviour
-to the base package function \code{\link[base]{as.data.frame.array}},
-but is usually what is wanted.
+order, with the \code{"age"} dimension last.  This ordering is different
+from the one used by base function \code{\link[base]{as.data.frame.array}},
+but, with life tables, is usually what is wanted.
 }
 \examples{
-## life table without iterations
-
 mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
                labels = c("0", "1-4", "5-9", "10+"),
                name = "age")
-ax <- ValuesOne(c(0.3, 1, 2.5, 2.5),
-                labels = c("0", "1-4", "5-9", "10+"),
-               name = "age")
-lt <- LifeTable(mx = mx, ax = ax)
+lt <- LifeTable(mx)
 lt
 as.data.frame(lt)
 
@@ -67,22 +62,16 @@ as.data.frame(lt)
 
 
 ## life table with iterations
-
 mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
                labels = c("0", "1-4", "5-9", "10+"),
                name = "age")
-ax <- ValuesOne(c(0.3, 1, 2.5, 2.5),
-               labels = c("0", "1-4", "5-9", "10+"),
-               name = "age")
 mx <- perturb(1000 * mx, n = 10) / 1000
-lt <- LifeTable(mx = mx, ax = ax)
+lt <- LifeTable(mx)
 lt
 as.data.frame(lt)
-
 showQuantiles(lt) <- FALSE
 lt
 as.data.frame(lt)
-
 showQuantiles(lt) <- TRUE
 prob(lt) <- c(0.1, 0.8)
 lt

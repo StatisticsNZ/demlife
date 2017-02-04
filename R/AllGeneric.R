@@ -46,9 +46,7 @@
 #' al <- Values(al)
 #' mx <- subarray(al,
 #'                subarray = (fun == "mx") & (time == "2001-2005"))
-#' ax <- subarray(al,
-#'                subarray = (fun == "ax") & (time == "2001-2005"))
-#' lt <- LifeTable(mx = mx, ax = ax)
+#' lt <- LifeTable(mx)
 #' lt
 #' lifeExpectancy(lt)
 #' lifeExpectancy(lt, age = 65)
@@ -73,19 +71,20 @@ setGeneric("lifeExpectancy",
 #' before the end of the age interval. \cr
 #'   \code{px} \tab \code{1 - qx} \cr
 #'   \code{lx} \tab Of \code{radix} births, the number of people expected to
-#' survive to exact age x \code{radix} \cr
+#' survive to exact age \code{x} \cr
 #'   \code{dx} \tab The number of deaths in the age interval, for a cohort of
 #' size \code{radix} at birth. \cr
 #'   \code{Lx} \tab The expected number of person-years lived in an age interval
 #' by a cohort of size \code{radix} at birth. \cr
 #'   \code{Tx} \tab Sum of the \code{Lx} from age \code{x} to the highest age. \cr
 #'   \code{ex} \tab Life expectancy at age \code{x}. \cr
-#'   \code{ax} \tab The 'separation factor' - the average number of years lived
-#' during an age interval by someone who does during that interval. \cr
+#'   \code{ax} \tab The 'separation factor' - the average number of years
+#'     lived during an age interval by someone who does during that interval. \cr
 #' }
 #'
-#' \code{fun} does not need to be one of the functions specified in the
-#' \code{showFun} argument to \code{\link{LifeTable}}.
+#' The \code{fun} argument in calls to \code{lifeTableFun} does not need to be
+#' one of the functions specified in the \code{showFun}
+#' argument to \code{\link{LifeTable}}.
 #' 
 #' @param object An object of class \code{\linkS4class{LifeTable}}.
 #' @param fun The name of a life table function.
@@ -102,14 +101,14 @@ setGeneric("lifeExpectancy",
 #' al <- Values(al)
 #' mx <- subarray(al,
 #'                subarray = (fun == "mx") & (time == "2001-2005"))
-#' ax <- subarray(al,
-#'                subarray = (fun == "ax") & (time == "2001-2005"))
-#' lt <- LifeTable(mx = mx, ax = ax)
+#' lt <- LifeTable(mx)
 #' lt
 #' lifeTableFun(lt, fun = "qx")
 #' lifeTableFun(lt, fun = "Lx")
-#' ## Because it is not included in \code{\link{showFun}}, \code{"Tx"}
-#' ## is not displayed.  But 'lifeTableFun' will work anyway.
+#' ## Because it is not included in the default value for 'showFun'
+#' ## in function 'LifeTable', "Tx" is not displayed in the
+#' ## life table above.  However, 'lifeTableFun' will generate
+#' ## a value for 'Tx' anyway.
 #' lifeTableFun(lt, fun = "Tx")
 #' @export
 setGeneric("lifeTableFun",
@@ -143,14 +142,12 @@ setGeneric("lifeTableFun",
 #'
 #' @seealso Life tables are created using function \code{\link{LifeTable}}.
 #'
+#' @examples
 #' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
 #'                labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
-#' ax <- ValuesOne(c(0.3, 1, 2.5, 2.5),
-#'                 labels = c("0", "1-4", "5-9", "10+"),
-#'                name = "age")
 #' mx <- perturb(1000 * mx, n = 20) / 1000
-#' lt <- LifeTable(mx = mx, ax = ax)
+#' lt <- LifeTable(mx)
 #' lt
 #' prob(lt)
 #' prob(lt) <- c(0.1, 0.9)
@@ -174,7 +171,7 @@ setGeneric("prob<-",
 #' \code{l0}, the first entry in the \code{lx} column.  As well as affecting
 #' \code{lx}, changing the radix affects \code{dx}, \code{Lx}, and \code{Tx}.
 #'
-#' The radix \code{radix} must be a positive number, and defaults to
+#' \code{radix} must be a positive number, and defaults to
 #' 100,000.
 #'
 #' @param object An object of class \code{\linkS4class{LifeTable}}.
@@ -186,13 +183,11 @@ setGeneric("prob<-",
 #'
 #' @seealso Life tables are created using function \code{\link{LifeTable}}.
 #'
+#' @examples
 #' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
 #'                labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
-#' ax <- ValuesOne(c(0.3, 1, 2.5, 2.5),
-#'                 labels = c("0", "1-4", "5-9", "10+"),
-#'                name = "age")
-#' lt <- LifeTable(mx = mx, ax = ax)
+#' lt <- LifeTable(mx)
 #' radix(lt)
 #' radix(lt) <- 1000
 #' lt
@@ -212,9 +207,9 @@ setGeneric("radix<-",
 #'
 #' Extract or change the \code{showFun} slot of an object of class
 #' \code{\linkS4class{LifeTable}}.  The \code{showFun} slot controls the way
-#' that life table functions are displayed, or output via functions
-#' such as \code{\link[=as.data.frame-LifeTable]{as.data.frame}}, but does
-#' not affect the underlying data contained in the
+#' that life table functions are displayed, as well as output via functions
+#' such as \code{\link[=as.data.frame-LifeTable]{as.data.frame}}. However it
+#' does not affect the underlying data contained in the
 #' \code{\linkS4class{LifeTable}} object.
 #'
 #' See the documentation for \code{\link{lifeTableFun}} for a list of the
@@ -229,13 +224,11 @@ setGeneric("radix<-",
 #'
 #' @seealso Life tables are created using function \code{\link{LifeTable}}.
 #'
+#' @examples
 #' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
 #'                labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
-#' ax <- ValuesOne(c(0.3, 1, 2.5, 2.5),
-#'                 labels = c("0", "1-4", "5-9", "10+"),
-#'                name = "age")
-#' lt <- LifeTable(mx = mx, ax = ax)
+#' lt <- LifeTable(mx)
 #' lt
 #' showFun(lt)
 #' showFun(lt) <- c("ex", "lx")
@@ -275,14 +268,12 @@ setGeneric("showFun<-",
 #'
 #' @seealso Life tables are created using function \code{\link{LifeTable}}.
 #'
+#' @examples
 #' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
 #'                labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
-#' ax <- ValuesOne(c(0.3, 1, 2.5, 2.5),
-#'                 labels = c("0", "1-4", "5-9", "10+"),
-#'                name = "age")
 #' mx <- perturb(1000 * mx, n = 20) / 1000
-#' lt <- LifeTable(mx = mx, ax = ax)
+#' lt <- LifeTable(mx)
 #' lt
 #' showQuantiles(lt)
 #' showQuantiles(lt) <- FALSE
@@ -320,13 +311,12 @@ setGeneric("showQuantiles<-",
 #'
 #' @seealso Life tables are created using function \code{\link{LifeTable}}.
 #'
+#' @examples
 #' al <- demdata::afghan.life
 #' al <- Values(al)
 #' mx <- subarray(al,
 #'                subarray = (fun == "mx") & (time == "2001-2005"))
-#' ax <- subarray(al,
-#'                subarray = (fun == "ax") & (time == "2001-2005"))
-#' lt <- LifeTable(mx = mx, ax = ax)
+#' lt <- LifeTable(mx)
 #' lt
 #' showTotal(lt)
 #' showTotal(lt) <- FALSE
@@ -341,6 +331,60 @@ setGeneric("showTotal",
 setGeneric("showTotal<-",
            function(object, value)
                standardGeneric("showTotal<-"))
+
+
+#' Calculate Sx, the probability of surviving into the next age group.
+#'
+#' Given a \code{\linkS4class{LifeTable}}, calculate the 'Sx', the probability
+#' of surviving into the next age group.  'Sx' is similar to the life table
+#' function 'Px', except that 'Sx' describes survival from one age group to
+#' the next, while 'Px' describes survival from one exact age to the next.
+#'
+#' 'Sx' differs from other life table functions in that
+#' \itemize{
+#'   \item it requires all age groups (except the last) to have the same width
+#' (see \code{\link[dembase]{hasRegularAgeTime}}), and
+#'   \item given the same set of data, 'Sx' contains one fewer age group.
+#' }
+#'
+#' 'Sx' is mainly used in models of population dynamics, such as population
+#' projections, though it occasionally appears in life tables.
+#'
+#' If \eqn{L_x} is the life table population between exact ages \eqn{x} and
+#' \eqn{x+n}, then \eqn{S_x = L_{x+a} / L_x}, except for the second-to-last
+#' age group, where \eqn{S_x = (L_{x+a} + L_x) / L_x}.  (\eqn{S_x} is not
+#' defined for the final age group.)  See below for an example.
+#'
+#' @param object a \code{\linkS4class{LifeTable}}.
+#'
+#' @return An object of class \code{\link[dembase]{Values}}.
+#' 
+#' @seealso To make the age groups in a life table 'regular', in the sense
+#' described in \code{\link[dembase]{hasRegularAgeTime}}, use function
+#' \code{\link[=collapseIntervals-LifeTable]{collapseIntervals}}.
+#'
+#' @examples
+#' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
+#'                labels = c("0", "1-4", "5-9", "10+"),
+#'                name = "age")
+#' lt <- LifeTable(mx)
+#' lt
+#'
+#' ## calling 'Sx' on a life table with irregular age intervals
+#' ## raises an error
+#' \dontrun{
+#' Sx(lt)
+#' }
+#'
+#' ## collapse the intervals, and try again
+#' lt <- collapseIntervals(lt, dimension = "age", width = 5)
+#' lt
+#' Sx(lt)
+#' @export
+setGeneric("Sx",
+           function(object)
+               standardGeneric("Sx"))
+
 
 
 

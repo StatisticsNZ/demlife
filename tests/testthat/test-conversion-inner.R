@@ -241,6 +241,7 @@ test_that("px2qx works", {
 
 test_that("makeLx works", {
     ## data from Preston et al, 2000, Demography, Box 3.1
+    makeLx <- demlife:::makeLx
     mx <- c(0.008743,
             0.000370,
             0.000153,

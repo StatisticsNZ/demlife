@@ -14,7 +14,7 @@
 #'
 #' @docType package
 #' @name demlife
-#' @importFrom dembase dimtypes
+#' @importFrom dembase collapseIntervals
 #' @import methods
 #' @useDynLib demlife, .registration = TRUE
 NULL

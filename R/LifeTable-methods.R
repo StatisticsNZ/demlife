@@ -12,9 +12,9 @@
 #' a life table as a .csv file.
 #'
 #' \code{as.data.frame} prints the dimensions of the life table in reverse
-#' order, with the \code{"age"} dimension last.  This is the opposite behaviour
-#' to the base package function \code{\link[base]{as.data.frame.array}},
-#' but is usually what is wanted.
+#' order, with the \code{"age"} dimension last.  This ordering is different
+#' from the one used by base function \code{\link[base]{as.data.frame.array}},
+#' but, with life tables, is usually what is wanted.
 #' 
 #' @param x An \code{\linkS4class{LifeTable}} object.
 #' @param row.names See \code{\link[base]{as.data.frame}}.
@@ -24,20 +24,15 @@
 #' \code{"value"}
 #' @param \dots Additional arguments to be passed to or from methods.
 #'
-#' @return An data.frame.
+#' @return A \code{\link[base]{data.frame}}.
 #'
 #' @seealso Life tables are created by function \code{\link{LifeTable}}.
 #'
 #' @examples
-#' ## life table without iterations
-#'
 #' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
 #'                labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
-#' ax <- ValuesOne(c(0.3, 1, 2.5, 2.5),
-#'                 labels = c("0", "1-4", "5-9", "10+"),
-#'                name = "age")
-#' lt <- LifeTable(mx = mx, ax = ax)
+#' lt <- LifeTable(mx)
 #' lt
 #' as.data.frame(lt)
 #' 
@@ -46,22 +41,16 @@
 #'
 #'
 #' ## life table with iterations
-#'
 #' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
 #'                labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
-#' ax <- ValuesOne(c(0.3, 1, 2.5, 2.5),
-#'                labels = c("0", "1-4", "5-9", "10+"),
-#'                name = "age")
 #' mx <- perturb(1000 * mx, n = 10) / 1000
-#' lt <- LifeTable(mx = mx, ax = ax)
+#' lt <- LifeTable(mx)
 #' lt
 #' as.data.frame(lt)
-#'
 #' showQuantiles(lt) <- FALSE
 #' lt
 #' as.data.frame(lt)
-#' 
 #' showQuantiles(lt) <- TRUE
 #' prob(lt) <- c(0.1, 0.8)
 #' lt
@@ -132,6 +121,110 @@ as.data.frame.LifeTable <- function(x, row.names = NULL, optional = FALSE,
 setMethod("as.data.frame",
           signature(x = "LifeTable"),
           as.data.frame.LifeTable)
+
+
+#' Collapse intervals in a life table.
+#'
+#' Collapse intervals in an object of class \code{\linkS4class{LifeTable}}.
+#' The intervals are typically age intervals, that is, age groups.
+#' However, other intervals, other types of intervals, such as time periods,
+#' can be collapsed instead.  See the documentation for
+#' function \code{\link[dembase]{collapseIntervals}}
+#' in package \code{dembase} for more information on collapsing intervals.
+#'
+#' In typical use, no \code{weights} argument is supplied.  Instead,
+#' \code{collapseIntervals} calculates \code{Lx} values for the life table,
+#' values and uses them as weights.
+#' 
+#' @param object Object of class \code{\linkS4class{DemographicArray}}.
+#' @param dimension Name or index of the dimension where the intervals are
+#' found.
+#' @param breaks Numeric vector giving the breaks between intervals after the
+#' merging has occurred.
+#' @param width The length of the intervals after the merging has occurred.
+#' @param old The labels of the intervals to be merged.
+#' @param weights Object of class \code{\linkS4class{Counts}}. Optional.
+#' @param \dots Not currently used.
+#'
+#' @return A \code{\linkS4class{LifeTable}}
+#'
+#' @seealso Life tables are created by function \code{\link{LifeTable}}.
+#' 
+#' @examples
+#' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
+#'                labels = c("0", "1-4", "5-9", "10+"),
+#'                name = "age")
+#' lt <- LifeTable(mx)
+#' lt
+#' collapseIntervals(lt, dimension = "age", width = 5)
+#' collapseIntervals(lt, dimension = "age", breaks = c(1, 10))
+#' collapseIntervals(lt, dimension = "age", old = c("0", "1-4"))
+#'
+#' popn <- CountsOne(c(10, 80, 120, 200),
+#'                   labels = c("0", "1-4", "5-9", "10+"),
+#'                   name = "age")
+#' collapseIntervals(lt, dimension = "age", width = 5, weights = popn)
+#' @name collapseIntervals-LifeTable
+NULL
+
+## HAS_TESTS
+#' @rdname collapseIntervals-LifeTable
+#' @export
+setMethod("collapseIntervals",
+          signature(object = "LifeTable",
+                    weights = "missing"),
+          function(object, dimension, breaks = NULL, width = NULL, old = NULL, 
+                   weights, ...) {
+              mx <- object@mx
+              ax <- object@ax
+              Lx <- makeLx(mx = mx,
+                           ax = ax)
+              callGeneric(object = object,
+                          dimension = dimension,
+                          breaks = breaks,
+                          width = width,
+                          old = old,
+                          weights = Lx,
+                          ...)
+          })
+
+## HAS_TESTS
+#' @rdname collapseIntervals-LifeTable
+#' @export
+setMethod("collapseIntervals",
+          signature(object = "LifeTable",
+                    weights = "Counts"),
+          function(object, dimension, breaks = NULL, width = NULL, old = NULL, 
+                   weights, ...) {
+              mx <- object@mx
+              ax <- object@ax
+              radix <- object@radix
+              showFun <- object@showFun
+              showQuantiles <- object@showQuantiles
+              showTotal <- object@showTotal
+              prob <- object@prob
+              mx <- collapseIntervals(object = mx,
+                                      dimension = dimension,
+                                      breaks = breaks,
+                                      width = width,
+                                      old = old,
+                                      weights = weights)
+              ax <- collapseIntervals(object = ax,
+                                      dimension = dimension,
+                                      breaks = breaks,
+                                      width = width,
+                                      old = old,
+                                      weights = weights)
+              new("LifeTable",
+                  mx = mx,
+                  ax = ax,
+                  radix = radix,
+                  showFun = showFun,
+                  showQuantiles = showQuantiles,
+                  showTotal = showTotal,
+                  prob = prob)
+          })
+              
 
 ## ## NO_TESTS
 ## #' @rdname decompLifeExpPair
@@ -469,3 +562,42 @@ setReplaceMethod("showTotal",
                  })
 
 
+#' @rdname Sx
+#' @export
+setMethod("Sx",
+          signature(object = "LifeTable"),
+          function(object) {
+              mx <- object@mx
+              ax <- object@ax
+              value <- tryCatch(dembase::hasRegularAgeTime(mx),
+                                error = function(e) e)
+              if (methods::is(value, "error"))
+                  stop(gettextf("life table does not have regular age-time plan : %s (consider using function 'collapseIntervals' to make life table regular)",
+                                value$message))
+              Lx <- makeLx(mx = mx,
+                           ax = ax)
+              DS.age <- dembase::DimScales(mx)[[1L]]
+              n.age <- length(DS.age)
+              dv.age <- DS.age@dimvalues
+              breaks <- dv.age[seq_len(n.age - 1L)]
+              Lx.curr <- collapseIntervals(Lx,
+                                           dimension = 1L,
+                                           breaks = breaks)
+              Lx.next <- dembase::slab(Lx,
+                                       dimension = 1L,
+                                       elements = seq.int(from = 2L, to = n.age))
+              metadata.ans <- Lx.curr@metadata
+              .Data.curr <- as.numeric(Lx.curr)
+              .Data.next <- as.numeric(Lx.next)
+              .Data.ans <- .Data.next / .Data.curr
+              .Data.ans <- array(.Data.ans,
+                                 dim = dim(metadata.ans),
+                                 dimnames = dimnames(metadata.ans))
+              new("Values",
+                  .Data = .Data.ans,
+                  metadata = metadata.ans)
+          })
+
+              
+                                       
+              

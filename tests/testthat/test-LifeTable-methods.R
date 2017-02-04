@@ -3,6 +3,68 @@ context("LifeTable-methods")
 n.test <- 5
 test.identity <- FALSE
 
+
+test_that("collapseIntervals works", {
+    makeLx <- demlife:::makeLx
+    al <- demdata::afghan.life
+    al <- Values(al)
+    mx <- subarray(al,
+                   subarray = (fun == "mx") & (time == "2001-2005"))
+    lt <- LifeTable(mx = mx)
+    ax <- lt@ax
+    ## do not supply weights
+    ans.obtained <- collapseIntervals(lt,
+                                      dimension = "age",
+                                      breaks = seq(5, 70, 10))
+    Lx <- makeLx(mx = mx, ax = ax)
+    mx.collapsed <- collapseIntervals(lt@mx,
+                                      dimension = "age",
+                                      breaks = seq(5, 70, 10),
+                                      weights = Lx)
+    ax.collapsed <- collapseIntervals(lt@ax,
+                                      dimension = "age",
+                                      breaks = seq(5, 70, 10),
+                                      weights = Lx)
+    ans.expected <- LifeTable(mx = mx.collapsed,
+                              ax = ax.collapsed)
+    expect_identical(ans.obtained, ans.expected)
+    ## supply weights
+    popn <- 1000 * makeLx(mx = mx, ax = ax) + 5
+    ans.obtained <- collapseIntervals(lt,
+                                      dimension = "age",
+                                      breaks = seq(5, 70, 10),
+                                      weights = popn)
+    mx.collapsed <- collapseIntervals(lt@mx,
+                                      dimension = "age",
+                                      breaks = seq(5, 70, 10),
+                                      weights = popn)
+    ax.collapsed <- collapseIntervals(lt@ax,
+                                      dimension = "age",
+                                      breaks = seq(5, 70, 10),
+                                      weights = popn)
+    ans.expected <- LifeTable(mx = mx.collapsed,
+                              ax = ax.collapsed)
+    expect_identical(ans.obtained, ans.expected)
+    ## aggregate time periods, not age
+    mx <- subarray(al, subarray = fun == "mx")
+    lt <- LifeTable(mx)
+    ans.obtained <- collapseIntervals(lt,
+                                      dimension = "time",
+                                      width = 10)
+    Lx <- makeLx(mx = lt@mx, ax = lt@ax)
+    mx.collapsed <- collapseIntervals(lt@mx,
+                                      dimension = "time",
+                                      width = 10,
+                                      weights = Lx)
+    ax.collapsed <- collapseIntervals(lt@ax,
+                                      dimension = "time",
+                                      width = 10,
+                                      weights = Lx)
+    ans.expected <- LifeTable(mx = mx.collapsed,
+                              ax = ax.collapsed)
+    expect_identical(ans.obtained, ans.expected)
+})
+
 test_that("lifeExpectancy works", {
     ## result has one dimension
     al <- demdata::afghan.life
@@ -284,3 +346,31 @@ test_that("showQuantiles replacement function works", {
 ##                     dimnames = list(age = c(0, 1, seq(5, 85, 5)))))
 
 ## decompLifeExpPair(lx1, lx2, Lx1, Lx2)
+
+
+
+test_that("collapseIntervals works", {
+    makeLx <- demlife:::makeLx
+    al <- demdata::afghan.life
+    al <- Values(al)
+    mx <- subarray(al,
+                   subarray = (fun == "mx") & (time == "2001-2005"))
+    lt <- LifeTable(mx = mx)
+    ## life table not regular
+    expect_error(Sx(lt),
+                 "life table does not have regular age-time plan")
+    ## life table regular
+    lt <- collapseIntervals(lt,
+                            dimension = "age",
+                            width = 5)
+    ans.obtained <- Sx(lt)
+    Lx <- lifeTableFun(lt, "Lx")
+    head <- 1/subarray(Lx, age < 80) * as.numeric(subarray(Lx, age > 5 & age < 85))
+    tail <- 1/collapseIntervals(subarray(Lx, age > 80), dimension = "age", breaks = 80) * as.numeric(subarray(Lx, age > 85))
+    ans.expected <- dbind(head, tail, along = "age")
+    ans.expected <- Values(ans.expected)
+    if (test.identity)
+        expect_identical(ans.obtained, ans.expected)
+    else
+        expect_equal(ans.obtained, ans.expected)
+})

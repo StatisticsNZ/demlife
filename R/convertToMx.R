@@ -1,7 +1,7 @@
 #' Convert life table function into mortality rates.
 #'
-#' Given the column of a life table (eg 'qx'), calculate the implied mortality
-#' rates ('mx').
+#' Given the column of a life table (eg "qx"), calculate the implied mortality
+#' rates ("mx").
 #'
 #' \code{convertToMx} is needed when calculating a life table from values
 #' other than 'mx', since function \code{\link{LifeTable}} constructs the
@@ -13,8 +13,9 @@
 #' See \code{\link{LifeTable}} for definitions of these functions.
 #'
 #' Demographers typically obtain the 'lx' column of a life table by
-#' multiplying the probability of surviving to age 'x' by a 'radix', usually
-#' 100000. The 'dx', 'Lx', and 'Tx' columns are also scaled by the 'radix'.
+#' multiplying the probability of surviving to age 'x' by a 'radix',
+#' which is usually 100000. The 'dx', 'Lx', and 'Tx' columns
+#' are also scaled by the radix.
 #'
 #' See the documentation for \code{\link{LifeTable}} for a discussion of
 #' how to specify separation factor \code{ax}.
@@ -29,7 +30,6 @@
 #' says nothing about mortality beyond age \code{x}. (In contrast to the
 #' other life table functions, the first value of \code{lx} contains
 #' no information, since it always equals \code{radix}.)
-#'
 #' Because life table functions \code{qx}, \code{px}, \code{dx}, and \code{lx},
 #' contain no information on the final age group, when \code{from} is one of
 #' these functions, the return value from \code{convertToMx} drops the final

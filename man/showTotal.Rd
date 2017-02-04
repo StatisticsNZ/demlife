@@ -38,19 +38,18 @@ has a dimension with \code{\link[dembase]{dimtype}} \code{"sex"}.
 \code{\linkS4class{LifeTable}} only stores "female" and "male"
 categories; totals are generated as needed.
 }
-\seealso{
-Life tables are created using function \code{\link{LifeTable}}.
-
+\examples{
 al <- demdata::afghan.life
 al <- Values(al)
 mx <- subarray(al,
                subarray = (fun == "mx") & (time == "2001-2005"))
-ax <- subarray(al,
-               subarray = (fun == "ax") & (time == "2001-2005"))
-lt <- LifeTable(mx = mx, ax = ax)
+lt <- LifeTable(mx)
 lt
 showTotal(lt)
 showTotal(lt) <- FALSE
 lt
+}
+\seealso{
+Life tables are created using function \code{\link{LifeTable}}.
 }
 

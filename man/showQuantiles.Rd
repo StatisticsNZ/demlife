@@ -40,20 +40,18 @@ stored as iterations, rather than quantiles.
 If \code{object} does not have a dimension with dimtype \code{"iterations"},
 then \code{showQuantiles} has no effect.
 }
-\seealso{
-Life tables are created using function \code{\link{LifeTable}}.
-
+\examples{
 mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
                labels = c("0", "1-4", "5-9", "10+"),
                name = "age")
-ax <- ValuesOne(c(0.3, 1, 2.5, 2.5),
-                labels = c("0", "1-4", "5-9", "10+"),
-               name = "age")
 mx <- perturb(1000 * mx, n = 20) / 1000
-lt <- LifeTable(mx = mx, ax = ax)
+lt <- LifeTable(mx)
 lt
 showQuantiles(lt)
 showQuantiles(lt) <- FALSE
 lt
+}
+\seealso{
+Life tables are created using function \code{\link{LifeTable}}.
 }
 

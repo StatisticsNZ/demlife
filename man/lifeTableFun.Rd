@@ -34,33 +34,34 @@ The life table functions are as follows:
 before the end of the age interval. \cr
   \code{px} \tab \code{1 - qx} \cr
   \code{lx} \tab Of \code{radix} births, the number of people expected to
-survive to exact age x \code{radix} \cr
+survive to exact age \code{x} \cr
   \code{dx} \tab The number of deaths in the age interval, for a cohort of
 size \code{radix} at birth. \cr
   \code{Lx} \tab The expected number of person-years lived in an age interval
 by a cohort of size \code{radix} at birth. \cr
   \code{Tx} \tab Sum of the \code{Lx} from age \code{x} to the highest age. \cr
   \code{ex} \tab Life expectancy at age \code{x}. \cr
-  \code{ax} \tab The 'separation factor' - the average number of years lived
-during an age interval by someone who does during that interval. \cr
+  \code{ax} \tab The 'separation factor' - the average number of years
+    lived during an age interval by someone who does during that interval. \cr
 }
 
-\code{fun} does not need to be one of the functions specified in the
-\code{showFun} argument to \code{\link{LifeTable}}.
+The \code{fun} argument in calls to \code{lifeTableFun} does not need to be
+one of the functions specified in the \code{showFun}
+argument to \code{\link{LifeTable}}.
 }
 \examples{
 al <- demdata::afghan.life
 al <- Values(al)
 mx <- subarray(al,
                subarray = (fun == "mx") & (time == "2001-2005"))
-ax <- subarray(al,
-               subarray = (fun == "ax") & (time == "2001-2005"))
-lt <- LifeTable(mx = mx, ax = ax)
+lt <- LifeTable(mx)
 lt
 lifeTableFun(lt, fun = "qx")
 lifeTableFun(lt, fun = "Lx")
-## Because it is not included in \\code{\\link{showFun}}, \\code{"Tx"}
-## is not displayed.  But 'lifeTableFun' will work anyway.
+## Because it is not included in the default value for 'showFun'
+## in function 'LifeTable', "Tx" is not displayed in the
+## life table above.  However, 'lifeTableFun' will generate
+## a value for 'Tx' anyway.
 lifeTableFun(lt, fun = "Tx")
 }
 \seealso{

@@ -29,9 +29,7 @@ al <- demdata::afghan.life
 al <- Values(al)
 mx <- subarray(al,
                subarray = (fun == "mx") & (time == "2001-2005"))
-ax <- subarray(al,
-               subarray = (fun == "ax") & (time == "2001-2005"))
-lt <- LifeTable(mx = mx, ax = ax)
+lt <- LifeTable(mx)
 lt
 lifeExpectancy(lt)
 lifeExpectancy(lt, age = 65)

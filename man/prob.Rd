@@ -42,20 +42,18 @@ then \code{prob} has no effect.
 The quantiles must be between 0 and 1 (inclusive) and must be ordered
 from smallest to largest.
 }
-\seealso{
-Life tables are created using function \code{\link{LifeTable}}.
-
+\examples{
 mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
                labels = c("0", "1-4", "5-9", "10+"),
                name = "age")
-ax <- ValuesOne(c(0.3, 1, 2.5, 2.5),
-                labels = c("0", "1-4", "5-9", "10+"),
-               name = "age")
 mx <- perturb(1000 * mx, n = 20) / 1000
-lt <- LifeTable(mx = mx, ax = ax)
+lt <- LifeTable(mx)
 lt
 prob(lt)
 prob(lt) <- c(0.1, 0.9)
 lt
+}
+\seealso{
+Life tables are created using function \code{\link{LifeTable}}.
 }
 

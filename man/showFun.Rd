@@ -29,28 +29,26 @@ with a new value for the \code{showFun} slot.
 \description{
 Extract or change the \code{showFun} slot of an object of class
 \code{\linkS4class{LifeTable}}.  The \code{showFun} slot controls the way
-that life table functions are displayed, or output via functions
-such as \code{\link[=as.data.frame-LifeTable]{as.data.frame}}, but does
-not affect the underlying data contained in the
+that life table functions are displayed, as well as output via functions
+such as \code{\link[=as.data.frame-LifeTable]{as.data.frame}}. However it
+does not affect the underlying data contained in the
 \code{\linkS4class{LifeTable}} object.
 }
 \details{
 See the documentation for \code{\link{lifeTableFun}} for a list of the
 valid life table functions.
 }
-\seealso{
-Life tables are created using function \code{\link{LifeTable}}.
-
+\examples{
 mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
                labels = c("0", "1-4", "5-9", "10+"),
                name = "age")
-ax <- ValuesOne(c(0.3, 1, 2.5, 2.5),
-                labels = c("0", "1-4", "5-9", "10+"),
-               name = "age")
-lt <- LifeTable(mx = mx, ax = ax)
+lt <- LifeTable(mx)
 lt
 showFun(lt)
 showFun(lt) <- c("ex", "lx")
 lt
+}
+\seealso{
+Life tables are created using function \code{\link{LifeTable}}.
 }
 
