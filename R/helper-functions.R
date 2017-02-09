@@ -139,7 +139,6 @@ checkAndTidyProb <- function(prob) {
     prob
 }
 
-
 ## HAS_TESTS
 checkAndTidyRadix <- function(radix) {
     ## 'radix' has length 1
@@ -160,6 +159,23 @@ checkAndTidyRadix <- function(radix) {
                       "radix"))
     radix <- as.double(radix)
     radix
+}
+
+## NO_TESTS
+checkLabelAgeStart <- function(useLabelStart) {
+    ## 'useLabelStart' has length 1
+    if (!identical(length(useLabelStart), 1L))
+        stop(gettextf("'%s' does not have length %d",
+                      "useLabelStart", 1L))
+    ## 'useLabelStart' is logical
+    if (!is.logical(useLabelStart))
+        stop(gettextf("'%s' does not have type \"%s\"",
+                      "useLabelStart", "logical"))
+    ## 'useLabelStart' is not missing
+    if (is.na(useLabelStart))
+        stop(gettextf("'%s' is missing",
+                      "useLabelStart"))
+    NULL
 }
 
 ## HAS_TESTS

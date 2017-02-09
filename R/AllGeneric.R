@@ -356,6 +356,10 @@ setGeneric("showTotal<-",
 #' defined for the final age group.)  See below for an example.
 #'
 #' @param object a \code{\linkS4class{LifeTable}}.
+#' @param useLabelStart Logical. If \code{TRUE}, the default, the
+#' Sx values are labelled by age at the start of the period;
+#' if \code{FALSE}, Sx values are labelled by age at the
+#' end of the period.
 #'
 #' @return An object of class \code{\link[dembase]{Values}}.
 #' 
@@ -380,9 +384,12 @@ setGeneric("showTotal<-",
 #' lt <- collapseIntervals(lt, dimension = "age", width = 5)
 #' lt
 #' Sx(lt)
+#'
+#' ## use age at the end of the interval, rather than the start
+#' Sx(lt, useLabelStart = FALSE)
 #' @export
 setGeneric("Sx",
-           function(object)
+           function(object, useLabelStart = TRUE)
                standardGeneric("Sx"))
 
 

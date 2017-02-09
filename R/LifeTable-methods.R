@@ -566,7 +566,8 @@ setReplaceMethod("showTotal",
 #' @export
 setMethod("Sx",
           signature(object = "LifeTable"),
-          function(object) {
+          function(object, useLabelStart = TRUE) {
+              checkLabelAgeStart(useLabelStart)
               mx <- object@mx
               ax <- object@ax
               value <- tryCatch(dembase::hasRegularAgeTime(mx),
@@ -586,7 +587,10 @@ setMethod("Sx",
               Lx.next <- dembase::slab(Lx,
                                        dimension = 1L,
                                        elements = seq.int(from = 2L, to = n.age))
-              metadata.ans <- Lx.curr@metadata
+              if (useLabelStart)
+                  metadata.ans <- Lx.curr@metadata
+              else
+                  metadata.ans <- Lx.next@metadata
               .Data.curr <- as.numeric(Lx.curr)
               .Data.next <- as.numeric(Lx.next)
               .Data.ans <- .Data.next / .Data.curr

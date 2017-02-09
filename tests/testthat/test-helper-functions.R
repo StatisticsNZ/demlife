@@ -257,6 +257,21 @@ test_that("checkAndTidyRadix works", {
                  "'radix' is non-positive")
 })
 
+test_that("checkLabelAgeStart works", {
+    checkLabelAgeStart <- demlife:::checkLabelAgeStart
+    expect_identical(checkLabelAgeStart(TRUE), NULL)
+    expect_identical(checkLabelAgeStart(FALSE), NULL)
+    ## 'useLabelStart' has length 1
+    expect_error(checkLabelAgeStart(c(FALSE, TRUE)),
+                 "'useLabelStart' does not have length 1")
+    ## 'useLabelStart' is logical
+    expect_error(checkLabelAgeStart("TRUE"),
+                 "'useLabelStart' does not have type \"logical\"")
+    ## 'useLabelStart' is not missing
+    expect_error(checkLabelAgeStart(NA),
+                 "'useLabelStart' is missing")
+})
+
 test_that("checkLifeTableInputValues works", {
     checkLifeTableInputValues <- demlife:::checkLifeTableInputValues
     x <- Values(array(c(0.3, 0.1, 0.2, 0.4, 0.2, 0.5),

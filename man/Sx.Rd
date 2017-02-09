@@ -6,12 +6,17 @@
 \alias{Sx,LifeTable-method}
 \title{Calculate Sx, the probability of surviving into the next age group.}
 \usage{
-Sx(object)
+Sx(object, useLabelStart = TRUE)
 
-\S4method{Sx}{LifeTable}(object)
+\S4method{Sx}{LifeTable}(object, useLabelStart = TRUE)
 }
 \arguments{
 \item{object}{a \code{\linkS4class{LifeTable}}.}
+
+\item{useLabelStart}{Logical. If \code{TRUE}, the default, the
+Sx values are labelled by age at the start of the period;
+if \code{FALSE}, Sx values are labelled by age at the
+end of the period.}
 }
 \value{
 An object of class \code{\link[dembase]{Values}}.
@@ -55,6 +60,9 @@ Sx(lt)
 lt <- collapseIntervals(lt, dimension = "age", width = 5)
 lt
 Sx(lt)
+
+## use age at the end of the interval, rather than the start
+Sx(lt, useLabelStart = FALSE)
 }
 \seealso{
 To make the age groups in a life table 'regular', in the sense

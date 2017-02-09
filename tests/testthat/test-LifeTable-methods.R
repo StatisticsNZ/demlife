@@ -349,7 +349,7 @@ test_that("showQuantiles replacement function works", {
 
 
 
-test_that("collapseIntervals works", {
+test_that("Sx works", {
     makeLx <- demlife:::makeLx
     al <- demdata::afghan.life
     al <- Values(al)
@@ -359,7 +359,7 @@ test_that("collapseIntervals works", {
     ## life table not regular
     expect_error(Sx(lt),
                  "life table does not have regular age-time plan")
-    ## life table regular
+    ## life table regular; useLabelStart = TRUE
     lt <- collapseIntervals(lt,
                             dimension = "age",
                             width = 5)
@@ -367,6 +367,20 @@ test_that("collapseIntervals works", {
     Lx <- lifeTableFun(lt, "Lx")
     head <- 1/subarray(Lx, age < 80) * as.numeric(subarray(Lx, age > 5 & age < 85))
     tail <- 1/collapseIntervals(subarray(Lx, age > 80), dimension = "age", breaks = 80) * as.numeric(subarray(Lx, age > 85))
+    ans.expected <- dbind(head, tail, along = "age")
+    ans.expected <- Values(ans.expected)
+    if (test.identity)
+        expect_identical(ans.obtained, ans.expected)
+    else
+        expect_equal(ans.obtained, ans.expected)
+    ## life table regular; useLabelStart = FALSE
+    lt <- collapseIntervals(lt,
+                            dimension = "age",
+                            width = 5)
+    ans.obtained <- Sx(lt, useLabelStart = FALSE)
+    Lx <- lifeTableFun(lt, "Lx")
+    head <- subarray(Lx, age > 5 & age < 85) / as.numeric(subarray(Lx, age < 80))
+    tail <- subarray(Lx, age > 85, drop = FALSE) / as.numeric(collapseIntervals(subarray(Lx, age > 80), dimension = "age", breaks = 80))
     ans.expected <- dbind(head, tail, along = "age")
     ans.expected <- Values(ans.expected)
     if (test.identity)
