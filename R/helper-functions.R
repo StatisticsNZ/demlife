@@ -161,7 +161,7 @@ checkAndTidyRadix <- function(radix) {
     radix
 }
 
-## NO_TESTS
+## HAS_TESTS
 checkLabelAgeStart <- function(useLabelStart) {
     ## 'useLabelStart' has length 1
     if (!identical(length(useLabelStart), 1L))

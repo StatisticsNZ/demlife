@@ -570,16 +570,17 @@ setMethod("Sx",
               checkLabelAgeStart(useLabelStart)
               mx <- object@mx
               ax <- object@ax
-              value <- tryCatch(dembase::hasRegularAgeTime(mx),
-                                error = function(e) e)
-              if (methods::is(value, "error"))
-                  stop(gettextf("life table does not have regular age-time plan : %s (consider using function 'collapseIntervals' to make life table regular)",
-                                value$message))
-              Lx <- makeLx(mx = mx,
-                           ax = ax)
               DS.age <- dembase::DimScales(mx)[[1L]]
               n.age <- length(DS.age)
               dv.age <- DS.age@dimvalues
+              dv.age.finite <- dv.age[is.finite(dv.age)]
+              if (length(dv.age.finite) > 2L) {
+                  length.age.gp <- diff(dv.age.finite)
+                  if (!all(length.age.gp[-1L] == length.age.gp[1L]))
+                      stop(gettext("age groups have unequal lengths : consider using function 'collapseIntervals' to make lengths equal"))
+              }
+              Lx <- makeLx(mx = mx,
+                           ax = ax)
               breaks <- dv.age[seq_len(n.age - 1L)]
               Lx.curr <- collapseIntervals(Lx,
                                            dimension = 1L,

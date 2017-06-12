@@ -358,7 +358,7 @@ test_that("Sx works", {
     lt <- LifeTable(mx = mx)
     ## life table not regular
     expect_error(Sx(lt),
-                 "life table does not have regular age-time plan")
+                 "age groups have unequal lengths : consider using function 'collapseIntervals' to make lengths equal")
     ## life table regular; useLabelStart = TRUE
     lt <- collapseIntervals(lt,
                             dimension = "age",
@@ -387,4 +387,13 @@ test_that("Sx works", {
         expect_identical(ans.obtained, ans.expected)
     else
         expect_equal(ans.obtained, ans.expected)
+    ## make sure that function does no require age intervals and time
+    ## intervals to have the same length
+    mx <- addDimension(mx, name = "time", labels = "2000", dimscale = "Intervals")
+    lt <- LifeTable(mx)
+    lt <- collapseIntervals(lt,
+                            dimension = "age",
+                            width = 5)
+    ans.obtained <- Sx(lt)
+    expect_identical(dimnames(ans.obtained)$time, "2000")
 })
