@@ -96,4 +96,3 @@ Measuring and Modeling Population Processes}. Blackwell.
 \code{convertToMx} may be needed to prepare the \code{mx}
 argument for function \code{\link{LifeTable}}.
 }
-

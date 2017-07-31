@@ -3,8 +3,8 @@
 \docType{methods}
 \name{prob}
 \alias{prob}
-\alias{prob,LifeTable-method}
 \alias{prob<-}
+\alias{prob,LifeTable-method}
 \alias{prob<-,LifeTable-method}
 \title{Quantiles used by a life table.}
 \usage{
@@ -56,4 +56,3 @@ lt
 \seealso{
 Life tables are created using function \code{\link{LifeTable}}.
 }
-

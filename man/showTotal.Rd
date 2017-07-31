@@ -3,8 +3,8 @@
 \docType{methods}
 \name{showTotal}
 \alias{showTotal}
-\alias{showTotal,LifeTable-method}
 \alias{showTotal<-}
+\alias{showTotal,LifeTable-method}
 \alias{showTotal<-,LifeTable-method}
 \title{Whether a LifeTable objects shows a "total" category for sex}
 \usage{
@@ -52,4 +52,3 @@ lt
 \seealso{
 Life tables are created using function \code{\link{LifeTable}}.
 }
-

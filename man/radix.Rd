@@ -3,8 +3,8 @@
 \docType{methods}
 \name{radix}
 \alias{radix}
-\alias{radix,LifeTable-method}
 \alias{radix<-}
+\alias{radix,LifeTable-method}
 \alias{radix<-,LifeTable-method}
 \title{Get or set the radix of a life table.}
 \usage{
@@ -48,4 +48,3 @@ lt
 \seealso{
 Life tables are created using function \code{\link{LifeTable}}.
 }
-

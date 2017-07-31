@@ -103,4 +103,3 @@ function.  \code{\link[=as.data.frame-LifeTable]{as.data.frame}}
 converts a \code{LifeTable} object to a (long form) data.frame,
 typically as a step towards exporting the life table to a .csv file.
 }
-

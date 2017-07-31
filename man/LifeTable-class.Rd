@@ -47,8 +47,8 @@ functions.}
 
 \item{\code{prob}}{A numeric vector.}
 }}
+
 \seealso{
 Objects of class \code{LifeTable} are typically created using
 function \code{\link{LifeTable}}.
 }
-

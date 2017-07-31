@@ -114,12 +114,26 @@ test_that("lifeTableFun works", {
                    subarray = (fun == "mx") & (time == "2001-2005"))
     ax <- subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
+    ## showTotal is TRUE
     lt <- LifeTable(mx = mx,
                     ax = ax)
     ans.obtained <- lifeTableFun(lt, fun = "qx")
     ans.expected <- subarray(al,
                              subarray = (fun == "qx") & (time == "2001-2005"))
+    expect_equal(as.numeric(subarray(ans.obtained, sex %in% c("Female", "Male"))),
+                 as.numeric(ans.expected), tol = 0.001)
+    ## showTotal is FALSE
+    lt <- LifeTable(mx = mx,
+                    ax = ax,
+                    showTotal = FALSE)
+    ans.obtained <- lifeTableFun(lt, fun = "qx")
+    ans.expected <- subarray(al,
+                             subarray = (fun == "qx") & (time == "2001-2005"))
     expect_equal(ans.obtained, ans.expected, tol = 0.001)
+    ## life expectancy
+    lt <- LifeTable(mx = mx,
+                    ax = ax,
+                    showTotal = FALSE)
     ans.obtained <- lifeTableFun(lt, fun = "ex")
     ans.expected <- subarray(al,
                              subarray = (fun == "ex") & (time == "2001-2005"))
@@ -368,7 +382,7 @@ test_that("Sx works", {
     head <- 1/subarray(Lx, age < 80) * as.numeric(subarray(Lx, age > 5 & age < 85))
     tail <- 1/collapseIntervals(subarray(Lx, age > 80), dimension = "age", breaks = 80) * as.numeric(subarray(Lx, age > 85))
     ans.expected <- dbind(head, tail, along = "age")
-    ans.expected <- Values(ans.expected)
+    ans.expected <- Values(ans.expected, dimtype = c(sex = "state"))
     if (test.identity)
         expect_identical(ans.obtained, ans.expected)
     else
@@ -382,7 +396,7 @@ test_that("Sx works", {
     head <- subarray(Lx, age > 5 & age < 85) / as.numeric(subarray(Lx, age < 80))
     tail <- subarray(Lx, age > 85, drop = FALSE) / as.numeric(collapseIntervals(subarray(Lx, age > 80), dimension = "age", breaks = 80))
     ans.expected <- dbind(head, tail, along = "age")
-    ans.expected <- Values(ans.expected)
+    ans.expected <- Values(ans.expected, dimtypes = c(sex = "state"))
     if (test.identity)
         expect_identical(ans.obtained, ans.expected)
     else

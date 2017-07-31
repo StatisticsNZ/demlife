@@ -3,8 +3,8 @@
 \docType{methods}
 \name{showFun}
 \alias{showFun}
-\alias{showFun,LifeTable-method}
 \alias{showFun<-}
+\alias{showFun,LifeTable-method}
 \alias{showFun<-,LifeTable-method}
 \title{Get or set the life table functions shown by default by a life table.}
 \usage{
@@ -51,4 +51,3 @@ lt
 \seealso{
 Life tables are created using function \code{\link{LifeTable}}.
 }
-

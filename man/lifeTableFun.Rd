@@ -68,4 +68,3 @@ lifeTableFun(lt, fun = "Tx")
 \code{\link{lifeExpectancy}} is a convenience function for
 extracting life expectancy at a particular age.
 }
-

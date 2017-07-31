@@ -18,4 +18,3 @@ The package is still under development.  Future features will include
   \item Mult-state life tables (eventually).
 }
 }
-

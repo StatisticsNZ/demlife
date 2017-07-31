@@ -3,8 +3,8 @@
 \docType{methods}
 \name{showQuantiles}
 \alias{showQuantiles}
-\alias{showQuantiles,LifeTable-method}
 \alias{showQuantiles<-}
+\alias{showQuantiles,LifeTable-method}
 \alias{showQuantiles<-,LifeTable-method}
 \title{Whether a LifeTable objects shows quantiles.}
 \usage{
@@ -54,4 +54,3 @@ lt
 \seealso{
 Life tables are created using function \code{\link{LifeTable}}.
 }
-

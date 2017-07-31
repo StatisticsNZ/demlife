@@ -39,4 +39,3 @@ Values for life expectancy can also be extracted from a
 \code{\linkS4class{LifeTable}} object using \code{\link{lifeTableFun}},
 though in this case all ages are shown.
 }
-

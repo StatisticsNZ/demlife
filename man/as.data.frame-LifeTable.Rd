@@ -2,9 +2,9 @@
 % Please edit documentation in R/LifeTable-methods.R
 \docType{methods}
 \name{as.data.frame-LifeTable}
-\alias{as.data.frame,LifeTable-method}
 \alias{as.data.frame-LifeTable}
 \alias{as.data.frame.LifeTable}
+\alias{as.data.frame,LifeTable-method}
 \title{Coerce a life table to a data frame.}
 \usage{
 \method{as.data.frame}{LifeTable}(x, row.names = NULL, optional = FALSE,
@@ -80,4 +80,3 @@ as.data.frame(lt)
 \seealso{
 Life tables are created by function \code{\link{LifeTable}}.
 }
-

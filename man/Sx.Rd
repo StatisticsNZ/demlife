@@ -69,4 +69,3 @@ To make the age groups in a life table 'regular', in the sense
 described in \code{\link[dembase]{hasRegularAgeTime}}, use function
 \code{\link[=collapseIntervals-LifeTable]{collapseIntervals}}.
 }
-

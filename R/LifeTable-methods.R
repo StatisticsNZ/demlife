@@ -303,6 +303,7 @@ setMethod("collapseIntervals",
 ##               ans
 ##           })
 
+
 #' @rdname lifeExpectancy
 #' @export
 setMethod("lifeExpectancy",
@@ -319,6 +320,13 @@ setMethod("lifeExpectancy",
                                 "age"))
               mx <- object@mx
               ax <- object@ax
+              showTotal <- object@showTotal
+              if (showTotal) {
+                  l <- addTotalCategory(mx = mx,
+                                        ax = ax)
+                  mx <- l$mx
+                  ax <- l$ax
+              }
               .Data.mx <- mx@.Data
               .Data.ax <- ax@.Data
               metadata.mx <- mx@metadata
@@ -372,6 +380,13 @@ setMethod("lifeTableFun",
               fun <- match.arg(fun)
               mx <- object@mx
               ax <- object@ax
+              showTotal <- object@showTotal
+              if (showTotal) {
+                  l <- addTotalCategory(mx = mx,
+                                        ax = ax)
+                  mx <- l$mx
+                  ax <- l$ax
+              }
               if (fun == "mx")
                   mx
               else if (fun == "ax")
@@ -570,6 +585,13 @@ setMethod("Sx",
               checkLabelAgeStart(useLabelStart)
               mx <- object@mx
               ax <- object@ax
+              showTotal <- object@showTotal
+              if (showTotal) {
+                  l <- addTotalCategory(mx = mx,
+                                        ax = ax)
+                  mx <- l$mx
+                  ax <- l$ax
+              }
               DS.age <- dembase::DimScales(mx)[[1L]]
               n.age <- length(DS.age)
               dv.age <- DS.age@dimvalues

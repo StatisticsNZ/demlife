@@ -2,9 +2,9 @@
 % Please edit documentation in R/LifeTable-methods.R
 \docType{methods}
 \name{collapseIntervals-LifeTable}
-\alias{collapseIntervals,LifeTable,ANY,ANY,ANY,ANY,Counts-method}
-\alias{collapseIntervals,LifeTable,ANY,ANY,ANY,ANY,missing-method}
 \alias{collapseIntervals-LifeTable}
+\alias{collapseIntervals,LifeTable,ANY,ANY,ANY,ANY,missing-method}
+\alias{collapseIntervals,LifeTable,ANY,ANY,ANY,ANY,Counts-method}
 \title{Collapse intervals in a life table.}
 \usage{
 \S4method{collapseIntervals}{LifeTable,ANY,ANY,ANY,ANY,missing}(object,
@@ -64,4 +64,3 @@ collapseIntervals(lt, dimension = "age", width = 5, weights = popn)
 \seealso{
 Life tables are created by function \code{\link{LifeTable}}.
 }
-
