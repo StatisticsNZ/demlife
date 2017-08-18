@@ -1,8 +1,8 @@
 Package: demlife
 Type: Package
 Title: Life Tables
-Version: 0.0.0.9005
-Date: 2017-08-01
+Version: 0.0.0.9006
+Date: 2017-08-19
 Author: John Bryant [aut, cre],
     Kate Peterssen [aut]
 Maintainer: John Bryant <john.bryant@stats.govt.nz>

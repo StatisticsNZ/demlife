@@ -382,7 +382,7 @@ test_that("Sx works", {
     head <- 1/subarray(Lx, age < 80) * as.numeric(subarray(Lx, age > 5 & age < 85))
     tail <- 1/collapseIntervals(subarray(Lx, age > 80), dimension = "age", breaks = 80) * as.numeric(subarray(Lx, age > 85))
     ans.expected <- dbind(head, tail, along = "age")
-    ans.expected <- Values(ans.expected, dimtype = c(sex = "state"))
+    ans.expected <- as(ans.expected, "Values")
     if (test.identity)
         expect_identical(ans.obtained, ans.expected)
     else
@@ -396,7 +396,7 @@ test_that("Sx works", {
     head <- subarray(Lx, age > 5 & age < 85) / as.numeric(subarray(Lx, age < 80))
     tail <- subarray(Lx, age > 85, drop = FALSE) / as.numeric(collapseIntervals(subarray(Lx, age > 80), dimension = "age", breaks = 80))
     ans.expected <- dbind(head, tail, along = "age")
-    ans.expected <- Values(ans.expected, dimtypes = c(sex = "state"))
+    ans.expected <- as(ans.expected, "Values")
     if (test.identity)
         expect_identical(ans.obtained, ans.expected)
     else
