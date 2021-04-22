@@ -3,7 +3,6 @@
 \docType{package}
 \name{demlife}
 \alias{demlife}
-\alias{demlife-package}
 \title{Functions and data structures for life tables.}
 \description{
 Tools for creating life tables and extracting life table functions

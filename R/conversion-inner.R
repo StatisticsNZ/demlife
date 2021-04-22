@@ -223,7 +223,7 @@ ex2Lx <- function(.Data, nx, ax) {
 ## validity tests for LifeTable
 makeLx <- function(mx, ax) {
     metadata <- mx@metadata
-    DimScales <- DimScales(metadata, use.names = FALSE)
+    DimScales <- dembase::DimScales(metadata, use.names = FALSE)
     DimScale.age <- DimScales[[1L]]
     dv.age <- DimScale.age@dimvalues
     nx <- diff(dv.age)

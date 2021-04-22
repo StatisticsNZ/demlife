@@ -4,9 +4,15 @@
 \alias{LifeTable}
 \title{Create a LifeTable object.}
 \usage{
-LifeTable(mx, ax = NULL, showFun = c("mx", "qx", "dx", "lx", "Lx", "ex"),
-  radix = 1e+05, showQuantiles = TRUE, showTotal = FALSE,
-  prob = c(0.025, 0.5, 0.975))
+LifeTable(
+  mx,
+  ax = NULL,
+  showFun = c("mx", "qx", "dx", "lx", "Lx", "ex"),
+  radix = 1e+05,
+  showQuantiles = TRUE,
+  showTotal = FALSE,
+  prob = c(0.025, 0.5, 0.975)
+)
 }
 \arguments{
 \item{mx}{An object of class
@@ -45,7 +51,7 @@ For definitions of the life table functions, see the documentation for
 \code{\link{lifeTableFun}}.
 
 \code{mx} is a \code{\link[dembase:DemographicArray-class]{Values}}
-object holding estimates of mortality rates, disaggregated by
+object holding estimates of mortality rates, disaggregated by 
 
 \code{ax} specifies "separation factors", that is, the average amount of time
 lived during an age interval by people who die during that interval.
@@ -70,7 +76,7 @@ by applyin the formulas provided by Preston et al (2001: Table 3.3).
 
 The arguments \code{showFun}, \code{showQuantiles} and \code{prob}
 affect printing, plotting, and
-\code{\link[=as.data.frame-LifeTable]{as.data.frame}}, but do not affect
+\code{\link[=as.data.frame.LifeTable]{as.data.frame}}, but do not affect
 the underlying data.  This means, for instance, that \code{lifeTableFun} can
 be produce values for life table functions that are not included in
 \code{showFun}.
@@ -81,23 +87,23 @@ the value of \code{radix} also affects the \code{dx}, \code{Lx} and
 \code{Tx} columns.
 }
 \examples{
-mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
+mx <- dembase::ValuesOne(c(0.2, 0.05, 0.1, 0.4),
                 labels = c("0", "1-4", "5-9", "10+"),
                 name = "age")
 LifeTable(mx)
 LifeTable(mx, showTotal = TRUE)
 
 al <- demdata::afghan.life
-al <- Values(al)
-mx <- subarray(al,
+al <- dembase::Values(al)
+mx <- dembase::subarray(al,
                subarray = (fun == "mx") & (time == "2001-2005"))
-ax <- subarray(al,
+ax <- dembase::subarray(al,
                subarray = (fun == "ax") & (time == "2001-2005"))
 LifeTable(mx = mx, ax = ax)
 }
 \seealso{
 \code{\link{lifeTableFun}} returns values for a life table
-function.  \code{\link[=as.data.frame-LifeTable]{as.data.frame}}
+function.  \code{\link[=as.data.frame.LifeTable]{as.data.frame}}
 converts a \code{LifeTable} object to a (long form) data.frame,
 typically as a step towards exporting the life table to a .csv file.
 }

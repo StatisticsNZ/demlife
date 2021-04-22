@@ -43,8 +43,8 @@
 #'
 #' @examples
 #' al <- demdata::afghan.life
-#' al <- Values(al)
-#' mx <- subarray(al,
+#' al <- dembase::Values(al)
+#' mx <- dembase::subarray(al,
 #'                subarray = (fun == "mx") & (time == "2001-2005"))
 #' lt <- LifeTable(mx)
 #' lt
@@ -98,8 +98,8 @@ setGeneric("lifeExpectancy",
 #'
 #' @examples
 #' al <- demdata::afghan.life
-#' al <- Values(al)
-#' mx <- subarray(al,
+#' al <- dembase::Values(al)
+#' mx <- dembase::subarray(al,
 #'                subarray = (fun == "mx") & (time == "2001-2005"))
 #' lt <- LifeTable(mx)
 #' lt
@@ -143,10 +143,10 @@ setGeneric("lifeTableFun",
 #' @seealso Life tables are created using function \code{\link{LifeTable}}.
 #'
 #' @examples
-#' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
+#' mx <- dembase::ValuesOne(c(0.2, 0.05, 0.1, 0.4),
 #'                labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
-#' mx <- perturb(1000 * mx, n = 20) / 1000
+#' mx <- dembase::perturb(1000 * mx, n = 20) / 1000
 #' lt <- LifeTable(mx)
 #' lt
 #' prob(lt)
@@ -184,7 +184,7 @@ setGeneric("prob<-",
 #' @seealso Life tables are created using function \code{\link{LifeTable}}.
 #'
 #' @examples
-#' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
+#' mx <- dembase::ValuesOne(c(0.2, 0.05, 0.1, 0.4),
 #'                labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
 #' lt <- LifeTable(mx)
@@ -208,7 +208,7 @@ setGeneric("radix<-",
 #' Extract or change the \code{showFun} slot of an object of class
 #' \code{\linkS4class{LifeTable}}.  The \code{showFun} slot controls the way
 #' that life table functions are displayed, as well as output via functions
-#' such as \code{\link[=as.data.frame-LifeTable]{as.data.frame}}. However it
+#' such as \code{\link[=as.data.frame.LifeTable]{as.data.frame}}. However it
 #' does not affect the underlying data contained in the
 #' \code{\linkS4class{LifeTable}} object.
 #'
@@ -225,7 +225,7 @@ setGeneric("radix<-",
 #' @seealso Life tables are created using function \code{\link{LifeTable}}.
 #'
 #' @examples
-#' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
+#' mx <- dembase::ValuesOne(c(0.2, 0.05, 0.1, 0.4),
 #'                labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
 #' lt <- LifeTable(mx)
@@ -269,10 +269,10 @@ setGeneric("showFun<-",
 #' @seealso Life tables are created using function \code{\link{LifeTable}}.
 #'
 #' @examples
-#' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
+#' mx <- dembase::ValuesOne(c(0.2, 0.05, 0.1, 0.4),
 #'                labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
-#' mx <- perturb(1000 * mx, n = 20) / 1000
+#' mx <- dembase::perturb(1000 * mx, n = 20) / 1000
 #' lt <- LifeTable(mx)
 #' lt
 #' showQuantiles(lt)
@@ -313,8 +313,8 @@ setGeneric("showQuantiles<-",
 #'
 #' @examples
 #' al <- demdata::afghan.life
-#' al <- Values(al)
-#' mx <- subarray(al,
+#' al <- dembase::Values(al)
+#' mx <- dembase::subarray(al,
 #'                subarray = (fun == "mx") & (time == "2001-2005"))
 #' lt <- LifeTable(mx)
 #' lt
@@ -368,7 +368,7 @@ setGeneric("showTotal<-",
 #' \code{\link[=collapseIntervals-LifeTable]{collapseIntervals}}.
 #'
 #' @examples
-#' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
+#' mx <- dembase::ValuesOne(c(0.2, 0.05, 0.1, 0.4),
 #'                labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
 #' lt <- LifeTable(mx)

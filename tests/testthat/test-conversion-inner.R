@@ -215,7 +215,7 @@ test_that("px2qx works", {
 ##     expect_equal(ans.obtained, ans.expected, tol = 0.001)
 ## })
 
-## mx <- Values(array(c(0.00912160,
+## mx <- dembase::Values(array(c(0.00912160,
 ##                      0.00048752,
 ##                      0.00020030,
 ##                      0.00020454,
@@ -312,9 +312,9 @@ test_that("makeLx works", {
     Lx1 <- array(Lx / 100000,
                  dim = 19,
                  dimnames = list(age = age.levels))
-    mx1 <- Values(mx1)
-    ax1 <- Values(ax1)
-    Lx1 <- Counts(Lx1)
+    mx1 <- dembase::Values(mx1)
+    ax1 <- dembase::Values(ax1)
+    Lx1 <- dembase::Counts(Lx1)
     ans.obtained <- makeLx(mx = mx1,
                            ax = ax1)
     ans.expected <- Lx1
@@ -332,9 +332,9 @@ test_that("makeLx works", {
                  dim = c(19, 2),
                  dimnames = list(age = age.levels,
                                  sex = c("f", "m")))
-    mx2 <- Values(mx2)
-    ax2 <- Values(ax2)
-    Lx2 <- Counts(Lx2)
+    mx2 <- dembase::Values(mx2)
+    ax2 <- dembase::Values(ax2)
+    Lx2 <- dembase::Counts(Lx2)
     ans.obtained <- makeLx(mx = mx2,
                            ax = ax2)
     ans.expected <- Lx2

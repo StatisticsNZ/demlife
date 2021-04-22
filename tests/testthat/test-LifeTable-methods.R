@@ -7,8 +7,8 @@ test.identity <- FALSE
 test_that("collapseIntervals works", {
     makeLx <- demlife:::makeLx
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
     lt <- LifeTable(mx = mx)
     ax <- lt@ax
@@ -46,7 +46,7 @@ test_that("collapseIntervals works", {
                               ax = ax.collapsed)
     expect_identical(ans.obtained, ans.expected)
     ## aggregate time periods, not age
-    mx <- subarray(al, subarray = fun == "mx")
+    mx <- dembase::subarray(al, subarray = fun == "mx")
     lt <- LifeTable(mx)
     ans.obtained <- collapseIntervals(lt,
                                       dimension = "time",
@@ -68,39 +68,39 @@ test_that("collapseIntervals works", {
 test_that("lifeExpectancy works", {
     ## result has one dimension
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     lt <- LifeTable(mx = mx,
                     ax = ax)
     ans.obtained <- lifeExpectancy(lt)
     ans.expected <- lifeTableFun(lt, fun = "ex")
-    ans.expected <- slab(ans.expected,
+    ans.expected <- dembase::slab(ans.expected,
                          dimension = "age",
                          elements = 1L)
     expect_identical(ans.obtained, ans.expected)
     ans.obtained <- lifeExpectancy(lt, age = 10)
     ans.expected <- lifeTableFun(lt, fun = "ex")
-    ans.expected <- slab(ans.expected,
+    ans.expected <- dembase::slab(ans.expected,
                          dimension = "age",
                          elements = 4L)
     expect_identical(ans.obtained, ans.expected)
     ## result is number
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005") &
                        (sex == "Female"))
     mx <- as(mx, "array")
     names(dimnames(mx)) <- "age"
-    mx <- Values(mx)
-    ax <- subarray(al,
+    mx <- dembase::Values(mx)
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005") & (sex == "Female"))
     ax <- as(ax, "array")
     names(dimnames(ax)) <- "age"
-    ax <- Values(ax)
+    ax <- dembase::Values(ax)
     lt <- LifeTable(mx = mx, ax = ax)
     ans.obtained <- lifeExpectancy(lt)
     ans.expected <- lifeTableFun(lt, fun = "ex")[[1]]
@@ -109,25 +109,25 @@ test_that("lifeExpectancy works", {
 
 test_that("lifeTableFun works", {
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     ## showTotal is TRUE
     lt <- LifeTable(mx = mx,
                     ax = ax)
     ans.obtained <- lifeTableFun(lt, fun = "qx")
-    ans.expected <- subarray(al,
+    ans.expected <- dembase::subarray(al,
                              subarray = (fun == "qx") & (time == "2001-2005"))
-    expect_equal(as.numeric(subarray(ans.obtained, sex %in% c("Female", "Male"))),
+    expect_equal(as.numeric(dembase::subarray(ans.obtained, sex %in% c("Female", "Male"))),
                  as.numeric(ans.expected), tol = 0.001)
     ## showTotal is FALSE
     lt <- LifeTable(mx = mx,
                     ax = ax,
                     showTotal = FALSE)
     ans.obtained <- lifeTableFun(lt, fun = "qx")
-    ans.expected <- subarray(al,
+    ans.expected <- dembase::subarray(al,
                              subarray = (fun == "qx") & (time == "2001-2005"))
     expect_equal(ans.obtained, ans.expected, tol = 0.001)
     ## life expectancy
@@ -135,21 +135,21 @@ test_that("lifeTableFun works", {
                     ax = ax,
                     showTotal = FALSE)
     ans.obtained <- lifeTableFun(lt, fun = "ex")
-    ans.expected <- subarray(al,
+    ans.expected <- dembase::subarray(al,
                              subarray = (fun == "ex") & (time == "2001-2005"))
     ans.expected <- as.array(ans.expected)
     dimnames(ans.expected)$age <- c(0, 1, seq(5, 85, 5))
-    ans.expected <- Values(ans.expected)
+    ans.expected <- dembase::Values(ans.expected)
     expect_equal(ans.obtained, ans.expected, tol = 0.001)
 })
 
 
 test_that("prob works", {
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     lt <- LifeTable(mx = mx,
                     ax = ax,
@@ -159,10 +159,10 @@ test_that("prob works", {
 
 test_that("prob replacement function works", {
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     lt <- LifeTable(mx = mx,
                     ax = ax,
@@ -173,10 +173,10 @@ test_that("prob replacement function works", {
 
 test_that("radix works", {
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     lt <- LifeTable(mx = mx,
                     ax = ax,
@@ -186,10 +186,10 @@ test_that("radix works", {
 
 test_that("radix replacement function works", {
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     lt <- LifeTable(mx = mx,
                     ax = ax,
@@ -200,10 +200,10 @@ test_that("radix replacement function works", {
 
 test_that("showFun works", {
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     lt <- LifeTable(mx = mx,
                     ax = ax,
@@ -213,10 +213,10 @@ test_that("showFun works", {
 
 test_that("showFun replacement function works", {
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     lt <- LifeTable(mx = mx,
                     ax = ax,
@@ -227,10 +227,10 @@ test_that("showFun replacement function works", {
 
 test_that("showQuantiles works", {
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     lt <- LifeTable(mx = mx,
                     ax = ax,
@@ -240,10 +240,10 @@ test_that("showQuantiles works", {
 
 test_that("showQuantiles replacement function works", {
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     lt <- LifeTable(mx = mx,
                     ax = ax,
@@ -264,7 +264,7 @@ test_that("showQuantiles replacement function works", {
 
 
 
-## Lx1 <- Counts(array(c(96354,
+## Lx1 <- dembase::Counts(array(c(96354,
 ##                       377877,
 ##                       467474,
 ##                       464534,
@@ -290,7 +290,7 @@ test_that("showQuantiles replacement function works", {
 ##                                               seq(9, 84, 5),
 ##                                               sep = "-"),
 ##                                         "85+"))))
-## Lx2 <- Counts(array(c(99410,
+## Lx2 <- dembase::Counts(array(c(99410,
 ##                       396947,
 ##                       495676,
 ##                       495275,
@@ -316,7 +316,7 @@ test_that("showQuantiles replacement function works", {
 ##                                               seq(9, 84, 5),
 ##                                               sep = "-"),
 ##                                         "85+"))))
-## lx1 <- Counts(array(c(100000,
+## lx1 <- dembase::Counts(array(c(100000,
 ##                       95458,
 ##                       93887,
 ##                       93174,
@@ -337,7 +337,7 @@ test_that("showQuantiles replacement function works", {
 ##                       12281) / 100000,
 ##                     dim = 19,
 ##                     dimnames = list(age = c(0, 1, seq(5, 85, 5)))))
-## lx2 <- Counts(array(c(100000,
+## lx2 <- dembase::Counts(array(c(100000,
 ##                       99321,
 ##                       99179,
 ##                       99096,
@@ -366,8 +366,8 @@ test_that("showQuantiles replacement function works", {
 test_that("Sx works", {
     makeLx <- demlife:::makeLx
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
     lt <- LifeTable(mx = mx)
     ## life table not regular
@@ -379,9 +379,9 @@ test_that("Sx works", {
                             width = 5)
     ans.obtained <- Sx(lt)
     Lx <- lifeTableFun(lt, "Lx")
-    head <- 1/subarray(Lx, age < 80) * as.numeric(subarray(Lx, age > 5 & age < 85))
-    tail <- 1/collapseIntervals(subarray(Lx, age > 80), dimension = "age", breaks = 80) * as.numeric(subarray(Lx, age > 85))
-    ans.expected <- dbind(head, tail, along = "age")
+    head <- 1/dembase::subarray(Lx, age < 80) * as.numeric(dembase::subarray(Lx, age > 5 & age < 85))
+    tail <- 1/collapseIntervals(dembase::subarray(Lx, age > 80), dimension = "age", breaks = 80) * as.numeric(dembase::subarray(Lx, age > 85))
+    ans.expected <- dembase::dbind(head, tail, along = "age")
     ans.expected <- as(ans.expected, "Values")
     if (test.identity)
         expect_identical(ans.obtained, ans.expected)
@@ -393,9 +393,9 @@ test_that("Sx works", {
                             width = 5)
     ans.obtained <- Sx(lt, useLabelStart = FALSE)
     Lx <- lifeTableFun(lt, "Lx")
-    head <- subarray(Lx, age > 5 & age < 85) / as.numeric(subarray(Lx, age < 80))
-    tail <- subarray(Lx, age > 85, drop = FALSE) / as.numeric(collapseIntervals(subarray(Lx, age > 80), dimension = "age", breaks = 80))
-    ans.expected <- dbind(head, tail, along = "age")
+    head <- dembase::subarray(Lx, age > 5 & age < 85) / as.numeric(dembase::subarray(Lx, age < 80))
+    tail <- dembase::subarray(Lx, age > 85, drop = FALSE) / as.numeric(collapseIntervals(dembase::subarray(Lx, age > 80), dimension = "age", breaks = 80))
+    ans.expected <- dembase::dbind(head, tail, along = "age")
     ans.expected <- as(ans.expected, "Values")
     if (test.identity)
         expect_identical(ans.obtained, ans.expected)
@@ -403,7 +403,7 @@ test_that("Sx works", {
         expect_equal(ans.obtained, ans.expected)
     ## make sure that function does no require age intervals and time
     ## intervals to have the same length
-    mx <- addDimension(mx, name = "time", labels = "2000", dimscale = "Intervals")
+    mx <- dembase::addDimension(mx, name = "time", labels = "2000", dimscale = "Intervals")
     lt <- LifeTable(mx)
     lt <- collapseIntervals(lt,
                             dimension = "age",

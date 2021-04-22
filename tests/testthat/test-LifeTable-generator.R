@@ -5,10 +5,10 @@ test.identity <- FALSE
 
 test_that("LifeTable creates valid objects - no iterations", {
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     ans.obtained <- LifeTable(mx = mx,
                               ax = ax)
@@ -17,11 +17,11 @@ test_that("LifeTable creates valid objects - no iterations", {
 
 test_that("LifeTable creates valid objects - with iterations", {
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    mx <- perturb(mx*1000, n = 20)/1000
-    ax <- subarray(al,
+    mx <- dembase::perturb(mx*1000, n = 20)/1000
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     ans.obtained <- LifeTable(mx = mx,
                               ax = ax)
@@ -30,10 +30,10 @@ test_that("LifeTable creates valid objects - with iterations", {
 
 test_that("LifeTable throws appropriate errors", {
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     expect_error(LifeTable(mx = "wrong",
                            ax = ax),
@@ -42,7 +42,7 @@ test_that("LifeTable throws appropriate errors", {
                            ax = "wrong"),
                  "'ax' has class \"character\"")
     mx.wrong <- mx
-    dimtypes(mx.wrong)["age"] <- "state"
+    dembase::dimtypes(mx.wrong)["age"] <- "state"
     expect_error(LifeTable(mx = mx.wrong,
                            ax = ax),
                  "'mx' does not have a dimension with dimtype \"age\"")

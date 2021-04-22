@@ -50,8 +50,8 @@ setClass("LifeTable",
              showTotal <- object@showTotal
              prob <- object@prob
              dim <- dim(mx)
-             dimtypes <- dimtypes(mx, use.names = FALSE)
-             DimScales <- DimScales(mx, use.names = FALSE)
+             dimtypes <- dembase::dimtypes(mx, use.names = FALSE)
+             DimScales <- dembase::DimScales(mx, use.names = FALSE)
              ## 'ax' and 'mx' have identical metadata
              if (!identical(ax@metadata, mx@metadata))
                  return(gettextf("'%s' and '%s' have different metadata",

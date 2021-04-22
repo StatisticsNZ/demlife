@@ -52,31 +52,31 @@
 #' @references Preston S, Heuveline P, Guillot M. 2000. \emph{Demography:
 #' Measuring and Modeling Population Processes}. Blackwell.
 #' @examples
-#' Lx <- Counts(array(c(1800000, 1650000, 1500000, 900000, 100000,
+#' Lx <- dembase::Counts(array(c(1800000, 1650000, 1500000, 900000, 100000,
 #'                      1700000, 1500000, 1400000, 800000,  50000),
 #'                    dim = c(5, 2),
 #'                    dimnames = list(age = c("0-19", "20-39", "40-59",
 #'                                            "60-79", "80+"),
 #'                                    sex = c("Female", "Male"))))
-#' ax <- Values(array(c(8.3, 5),
+#' ax <- dembase::Values(array(c(8.3, 5),
 #'                    dim = c(1, 2),
 #'                    dimnames = list(age = "0-19",
 #'                                    sex = c("Female", "Male"))))
 #' convertToMx(Lx, from = "Lx", ax = ax)
 #'
 #'
-#' ax <- ValuesOne(3, labels = "0-19", name = "age")
+#' ax <- dembase::ValuesOne(3, labels = "0-19", name = "age")
 #'
-#' lx <- CountsOne(c(100000, 90000, 70000, 30000, 5000),
+#' lx <- dembase::CountsOne(c(100000, 90000, 70000, 30000, 5000),
 #'                 labels = c(0, 20, 40, 60, 80),
 #'                 name = "age")
-#' ax <- ValuesOne(5, labels = "0-19", name = "age")
+#' ax <- dembase::ValuesOne(5, labels = "0-19", name = "age")
 #' convertToMx(lx, from = "lx", ax = ax)
 #'
-#' qx <- ValuesOne(c(0.1, 0.05, 0.15, 0.25, 1),
+#' qx <- dembase::ValuesOne(c(0.1, 0.05, 0.15, 0.25, 1),
 #'                 labels = c("0-19", "20-39", "40-59", "60-79", "80+"),
 #'                 name = "age")
-#' ax <- ValuesOne(5, labels = "0-19", name = "age")
+#' ax <- dembase::ValuesOne(5, labels = "0-19", name = "age")
 #' convertToMx(qx, from = "qx", ax = ax)
 #' @export
 convertToMx <- function(object, from = c("qx", "px", "dx", "lx", "Lx", "Tx", "ex"),

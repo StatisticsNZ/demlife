@@ -45,7 +45,7 @@ calculateLifeTableFuns <- function(mx, ax, radix, funs,
                                    ltFunSecond) {
     mult.by.radix <- getFunMultByRadix()
     names <- names(mx)
-    dimtypes <- dimtypes(mx, use.names = FALSE)
+    dimtypes <- dembase::dimtypes(mx, use.names = FALSE)
     DimScales <- dembase::DimScales(mx, use.names = FALSE)
     DS.age <- DimScales[[1L]]
     dv.age <- DS.age@dimvalues
@@ -351,7 +351,7 @@ getLifeTableDimScale <- function(name) {
 
 ## NO_TESTS
 makeDimensions <- function(mx) {
-    limits <- limits(mx)
+    limits <- dembase::limits(mx)
     limits[] <- lapply(limits, as.character)
     first <- limits["first", ]
     last <- limits["last", ]

@@ -15,7 +15,7 @@
 #' order, with the \code{"age"} dimension last.  This ordering is different
 #' from the one used by base function \code{\link[base]{as.data.frame.array}},
 #' but, with life tables, is usually what is wanted.
-#' 
+#'
 #' @param x An \code{\linkS4class{LifeTable}} object.
 #' @param row.names See \code{\link[base]{as.data.frame}}.
 #' @param optional See \code{\link[base]{as.data.frame}}.
@@ -29,22 +29,22 @@
 #' @seealso Life tables are created by function \code{\link{LifeTable}}.
 #'
 #' @examples
-#' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
+#' mx <- dembase::ValuesOne(c(0.2, 0.05, 0.1, 0.4),
 #'                labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
 #' lt <- LifeTable(mx)
 #' lt
 #' as.data.frame(lt)
-#' 
+#'
 #' showFun(lt) <- c("ex", "Tx")
 #' as.data.frame(lt)
 #'
 #'
 #' ## life table with iterations
-#' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
+#' mx <- dembase::ValuesOne(c(0.2, 0.05, 0.1, 0.4),
 #'                labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
-#' mx <- perturb(1000 * mx, n = 10) / 1000
+#' mx <- dembase::perturb(1000 * mx, n = 10) / 1000
 #' lt <- LifeTable(mx)
 #' lt
 #' as.data.frame(lt)
@@ -55,10 +55,7 @@
 #' prob(lt) <- c(0.1, 0.8)
 #' lt
 #' as.data.frame(lt)
-#' @name as.data.frame-LifeTable
-NULL
-
-#' @rdname as.data.frame-LifeTable
+#' @method as.data.frame LifeTable
 #' @export
 as.data.frame.LifeTable <- function(x, row.names = NULL, optional = FALSE,
                                     stringsAsFactors = default.stringsAsFactors(),
@@ -78,7 +75,7 @@ as.data.frame.LifeTable <- function(x, row.names = NULL, optional = FALSE,
         mx <- l$mx
         ax <- l$ax
     }
-    dimtypes <- dimtypes(mx, use.names = FALSE)
+    dimtypes <- dembase::dimtypes(mx, use.names = FALSE)
     life.table.funs <- calculateLifeTableFuns(mx = mx,
                                               ax = ax,
                                               radix = radix,
@@ -116,7 +113,7 @@ as.data.frame.LifeTable <- function(x, row.names = NULL, optional = FALSE,
     ans[s]
 }
 
-#' @rdname as.data.frame-LifeTable
+#' @rdname as.data.frame.LifeTable
 #' @export
 setMethod("as.data.frame",
           signature(x = "LifeTable"),
@@ -135,7 +132,7 @@ setMethod("as.data.frame",
 #' In typical use, no \code{weights} argument is supplied.  Instead,
 #' \code{collapseIntervals} calculates \code{Lx} values for the life table,
 #' values and uses them as weights.
-#' 
+#'
 #' @param object Object of class \code{\linkS4class{DemographicArray}}.
 #' @param dimension Name or index of the dimension where the intervals are
 #' found.
@@ -149,9 +146,9 @@ setMethod("as.data.frame",
 #' @return A \code{\linkS4class{LifeTable}}
 #'
 #' @seealso Life tables are created by function \code{\link{LifeTable}}.
-#' 
+#'
 #' @examples
-#' mx <- ValuesOne(c(0.2, 0.05, 0.1, 0.4),
+#' mx <- dembase::ValuesOne(c(0.2, 0.05, 0.1, 0.4),
 #'                labels = c("0", "1-4", "5-9", "10+"),
 #'                name = "age")
 #' lt <- LifeTable(mx)
@@ -160,7 +157,7 @@ setMethod("as.data.frame",
 #' collapseIntervals(lt, dimension = "age", breaks = c(1, 10))
 #' collapseIntervals(lt, dimension = "age", old = c("0", "1-4"))
 #'
-#' popn <- CountsOne(c(10, 80, 120, 200),
+#' popn <- dembase::CountsOne(c(10, 80, 120, 200),
 #'                   labels = c("0", "1-4", "5-9", "10+"),
 #'                   name = "age")
 #' collapseIntervals(lt, dimension = "age", width = 5, weights = popn)
@@ -173,7 +170,7 @@ NULL
 setMethod("collapseIntervals",
           signature(object = "LifeTable",
                     weights = "missing"),
-          function(object, dimension, breaks = NULL, width = NULL, old = NULL, 
+          function(object, dimension, breaks = NULL, width = NULL, old = NULL,
                    weights, ...) {
               mx <- object@mx
               ax <- object@ax
@@ -194,7 +191,7 @@ setMethod("collapseIntervals",
 setMethod("collapseIntervals",
           signature(object = "LifeTable",
                     weights = "Counts"),
-          function(object, dimension, breaks = NULL, width = NULL, old = NULL, 
+          function(object, dimension, breaks = NULL, width = NULL, old = NULL,
                    weights, ...) {
               mx <- object@mx
               ax <- object@ax
@@ -224,7 +221,7 @@ setMethod("collapseIntervals",
                   showTotal = showTotal,
                   prob = prob)
           })
-              
+
 
 ## ## NO_TESTS
 ## #' @rdname decompLifeExpPair
@@ -241,8 +238,8 @@ setMethod("collapseIntervals",
 ##               checkLifeTableInputValues(Lx2, from = "Lx")
 ##               names.lx1 <- names(lx1)
 ##               dim.lx1 <- dim(lx1)
-##               dimtypes.lx1 <- dimtypes(lx1, use.names = FALSE)
-##               DimScales.lx1 <- DimScales(lx1, use.names = FALSE)
+##               dimtypes.lx1 <- dembase::dimtypes(lx1, use.names = FALSE)
+##               DimScales.lx1 <- dembase::DimScales(lx1, use.names = FALSE)
 ##               for (name in c("lx2", "Lx1", "Lx2")) {
 ##                   value <- get(name)
 ##                   if (!setequal(names.lx1, names(value)))
@@ -252,8 +249,8 @@ setMethod("collapseIntervals",
 ##                   if (!identical(dim.lx1, dim(value)))
 ##                       stop(gettextf("'%s' and '%s' have different dimensions",
 ##                                     "lx1", name))
-##                   dimtypes.val <- dimtypes(value, use.names = FALSE)
-##                   DimScales.val <- DimScales(value, use.names = FALSE)
+##                   dimtypes.val <- dembase::dimtypes(value, use.names = FALSE)
+##                   DimScales.val <- dembase::DimScales(value, use.names = FALSE)
 ##                   for (i in seq_along(names.lx1)) {
 ##                       dimtype.lx1 <- dimtypes.lx1[i]
 ##                       dimtype.val <- dimtypes.val[i]
@@ -279,7 +276,7 @@ setMethod("collapseIntervals",
 ##               }
 ##               Tx1 <- convertLifeTableFun(Lx1, from = "Lx", to = "Tx")
 ##               Tx2 <- convertLifeTableFun(Lx2, from = "Lx", to = "Tx")
-##               i.age <- match("age", dimtypes(lx1)) ## same for Lx, Tx
+##               i.age <- match("age", dembase::dimtypes(lx1)) ## same for Lx, Tx
 ##               n.age <- dim(lx1)[i.age]             ## same for Lx, Tx
 ##               not.first.age <- slice.index(lx1, MARGIN = i.age) > 1L
 ##               not.last.age <- slice.index(lx1, MARGIN = i.age) < n.age
@@ -331,7 +328,7 @@ setMethod("lifeExpectancy",
               .Data.ax <- ax@.Data
               metadata.mx <- mx@metadata
               dim <- dim(.Data.mx)
-              DimScales <- DimScales(metadata.mx,
+              DimScales <- dembase::DimScales(metadata.mx,
                                      use.names = FALSE)
               DimScale.age <- DimScales[[1L]]
               dv.age <- DimScale.age@dimvalues
@@ -396,7 +393,7 @@ setMethod("lifeTableFun",
                   .Data.ax <- ax@.Data
                   metadata.mx <- mx@metadata
                   dim <- dim(.Data.mx)
-                  DimScales <- DimScales(metadata.mx,
+                  DimScales <- dembase::DimScales(metadata.mx,
                                          use.names = FALSE)
                   DimScale.age <- DimScales[[1L]]
                   dv.age <- DimScale.age@dimvalues
@@ -487,13 +484,13 @@ setMethod("show",
                   mx <- l$mx
                   ax <- l$ax
               }
-              dimtypes <- dimtypes(mx, use.names = FALSE)
+              dimtypes <- dembase::dimtypes(mx, use.names = FALSE)
               dimensions <- makeDimensions(mx)
               life.table.funs <- calculateLifeTableFuns(mx = mx,
                                                         ax = ax,
                                                         radix = radix,
                                                         funs = showFun,
-                                                        ltFunSecond = TRUE)              
+                                                        ltFunSecond = TRUE)
               has.iter <- "iteration" %in% dimtypes
               if (has.iter) {
                   if (showQuantiles)
@@ -625,6 +622,6 @@ setMethod("Sx",
                   metadata = metadata.ans)
           })
 
-              
-                                       
-              
+
+
+

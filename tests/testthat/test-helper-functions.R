@@ -8,24 +8,24 @@ test_that("addTotalCategory works", {
     makeLx <- demlife:::makeLx
     ## capitals in labels
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     ans.obtained <- addTotalCategory(mx = mx,
                                      ax = ax)
     mx.tmp <- mx
-    dimtypes(mx.tmp)[2] <- "state"
+    dembase::dimtypes(mx.tmp)[2] <- "state"
     ax.tmp <- ax
-    dimtypes(ax.tmp)[2] <- "state"
-    ans.expected <- list(mx = dbind(mx.tmp,
-                                    Total = collapseDimension(mx,
+    dembase::dimtypes(ax.tmp)[2] <- "state"
+    ans.expected <- list(mx = dembase::dbind(mx.tmp,
+                                    Total = dembase::collapseDimension(mx,
                                                               dimension = "sex",
                                                               weights = makeLx(mx, ax)),
                                     along = "sex"),
-                         ax = dbind(ax.tmp,
-                                    Total = collapseDimension(ax,
+                         ax = dembase::dbind(ax.tmp,
+                                    Total = dembase::collapseDimension(ax,
                                                               dimension = "sex",
                                                               weights = makeLx(mx, ax)),
                                     along = "sex"))
@@ -33,37 +33,37 @@ test_that("addTotalCategory works", {
     ## no capitals in labels
     al <- demdata::afghan.life
     dimnames(al)$sex <- tolower(dimnames(al)$sex)
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     ans.obtained <- addTotalCategory(mx = mx,
                                      ax = ax)
     mx.tmp <- mx
-    dimtypes(mx.tmp)[2] <- "state"
+    dembase::dimtypes(mx.tmp)[2] <- "state"
     ax.tmp <- ax
-    dimtypes(ax.tmp)[2] <- "state"
-    ans.expected <- list(mx = dbind(mx.tmp,
-                                    total = collapseDimension(mx,
+    dembase::dimtypes(ax.tmp)[2] <- "state"
+    ans.expected <- list(mx = dembase::dbind(mx.tmp,
+                                    total = dembase::collapseDimension(mx,
                                                               dimension = "sex",
                                                               weights = makeLx(mx, ax)),
                                     along = "sex"),
-                         ax = dbind(ax.tmp,
-                                    total = collapseDimension(ax,
+                         ax = dembase::dbind(ax.tmp,
+                                    total = dembase::collapseDimension(ax,
                                                               dimension = "sex",
                                                               weights = makeLx(mx, ax)),
                                     along = "sex"))
     expect_identical(ans.obtained, ans.expected)
     ## no sex dimension
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
-    dimtypes(mx)[2] <- "state"
-    dimtypes(ax)[2] <- "state"
+    dembase::dimtypes(mx)[2] <- "state"
+    dembase::dimtypes(ax)[2] <- "state"
     ans.obtained <- addTotalCategory(mx = mx,
                                      ax = ax)
     ans.expected <- list(mx = mx, ax = ax)
@@ -75,10 +75,10 @@ test_that("calculateLifeTableFuns works - ltFunSecond is TRUE", {
     convertLifeTableFun <- demlife:::convertLifeTableFun
     ## 2 dimensions
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     ans.obtained <- calculateLifeTableFuns(mx = mx,
                                            ax = ax,
@@ -99,24 +99,24 @@ test_that("calculateLifeTableFuns works - ltFunSecond is TRUE", {
                           dim = c(dim(mx), 3))
     dimnames(ans.expected) <- c(dimnames(mx),
                                 list(lt.fun = c("mx", "ax", "lx")))
-    ans.expected <- Values(ans.expected)
+    ans.expected <- dembase::Values(ans.expected)
     ans.expected <- aperm(ans.expected, perm = c(1, 3, 2))
     expect_identical(ans.obtained, ans.expected)
     ## 1 dimension
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = ((fun == "mx")
                        & (time == "2001-2005")
                        & (sex == "Female")))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = ((fun == "ax")
                        & (time == "2001-2005")
                        & (sex == "Female")))
-    mx <- ValuesOne(mx,
+    mx <- dembase::ValuesOne(mx,
                     labels = names(mx),
                     name = "age")
-    ax <- ValuesOne(ax,
+    ax <- dembase::ValuesOne(ax,
                     labels = names(ax),
                     name = "age")
     ans.obtained <- calculateLifeTableFuns(mx = mx,
@@ -138,7 +138,7 @@ test_that("calculateLifeTableFuns works - ltFunSecond is TRUE", {
                           dim = c(19, 3))
     dimnames(ans.expected) <- c(dimnames(mx),
                                 list(lt.fun = c("mx", "ax", "lx")))
-    ans.expected <- Values(ans.expected)
+    ans.expected <- dembase::Values(ans.expected)
     expect_identical(ans.obtained, ans.expected)
 })
 
@@ -147,10 +147,10 @@ test_that("calculateLifeTableFuns works - ltFunSecond is FALSE", {
     convertLifeTableFun <- demlife:::convertLifeTableFun
     ## 2 dimensions
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = (fun == "mx") & (time == "2001-2005"))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = (fun == "ax") & (time == "2001-2005"))
     ans.obtained <- calculateLifeTableFuns(mx = mx,
                                            ax = ax,
@@ -171,23 +171,23 @@ test_that("calculateLifeTableFuns works - ltFunSecond is FALSE", {
                           dim = c(dim(mx), 3))
     dimnames(ans.expected) <- c(dimnames(mx),
                                 list(lt.fun = c("mx", "ax", "dx")))
-    ans.expected <- Values(ans.expected)
+    ans.expected <- dembase::Values(ans.expected)
     expect_identical(ans.obtained, ans.expected)
     ## 1 dimension
     al <- demdata::afghan.life
-    al <- Values(al)
-    mx <- subarray(al,
+    al <- dembase::Values(al)
+    mx <- dembase::subarray(al,
                    subarray = ((fun == "mx")
                        & (time == "2001-2005")
                        & (sex == "Female")))
-    ax <- subarray(al,
+    ax <- dembase::subarray(al,
                    subarray = ((fun == "ax")
                        & (time == "2001-2005")
                        & (sex == "Female")))
-    mx <- ValuesOne(mx,
+    mx <- dembase::ValuesOne(mx,
                     labels = names(mx),
                     name = "age")
-    ax <- ValuesOne(ax,
+    ax <- dembase::ValuesOne(ax,
                     labels = names(ax),
                     name = "age")
     ans.obtained <- calculateLifeTableFuns(mx = mx,
@@ -209,7 +209,7 @@ test_that("calculateLifeTableFuns works - ltFunSecond is FALSE", {
                           dim = c(19, 3))
     dimnames(ans.expected) <- c(dimnames(mx),
                                 list(lt.fun = c("mx", "ax", "Lx")))
-    ans.expected <- Values(ans.expected)
+    ans.expected <- dembase::Values(ans.expected)
     expect_identical(ans.obtained, ans.expected)
 })
 
@@ -274,14 +274,14 @@ test_that("checkLabelAgeStart works", {
 
 test_that("checkLifeTableInputValues works", {
     checkLifeTableInputValues <- demlife:::checkLifeTableInputValues
-    x <- Values(array(c(0.3, 0.1, 0.2, 0.4, 0.2, 0.5),
+    x <- dembase::Values(array(c(0.3, 0.1, 0.2, 0.4, 0.2, 0.5),
                       dim = c(3, 2),
                       dimnames = list(age = c("0-4", "5-9", "10+"),
                           sex = c("m", "f"))))
     expect_identical(checkLifeTableInputValues(x, from = "mx", radix = 100000),
                      NULL)
     ## length > 0
-    x.wrong <- Values(array(0,
+    x.wrong <- dembase::Values(array(0,
                             dim = c(3, 0),
                             dimnames = list(age = c("0-4", "5-9", "10+"),
                                 sex = character())))
@@ -307,14 +307,14 @@ test_that("checkLifeTableInputValues works", {
     expect_error(checkLifeTableInputValues(x.wrong, from = "lx", radix = 100000),
                  "'from' is \"lx\" but some values for first age group do not equal 'radix'")
     ## if Lx, all values less than nx
-    x.wrong <- Values(array(c(4, 3, 10, 4, 6, 1),
+    x.wrong <- dembase::Values(array(c(4, 3, 10, 4, 6, 1),
                             dim = c(3, 2),
                             dimnames = list(age = c("0-4", "5-9", "10+"),
                                 sex = c("m", "f"))))
     expect_error(checkLifeTableInputValues(x.wrong, from = "Lx", radix = 1),
                  "'from' is \"Lx\" but some values are larger than 'radix' times the width of the age group")
     ## if lx, Lx, Tx, values are non-increasing
-    x.wrong <- Values(array(c(4, 3, 10, 4, 3, 1),
+    x.wrong <- dembase::Values(array(c(4, 3, 10, 4, 3, 1),
                             dim = c(3, 2),
                             dimnames = list(age = c("0-4", "5-9", "10+"),
                                 sex = c("m", "f"))))

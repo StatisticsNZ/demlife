@@ -1,8 +1,8 @@
 Package: demlife
 Type: Package
 Title: Life Tables
-Version: 0.0.0.9006
-Date: 2017-08-19
+Version: 0.0.0.9007
+Date: 2021-04-23
 Author: John Bryant [aut, cre],
     Kate Peterssen [aut]
 Maintainer: John Bryant <john.bryant@stats.govt.nz>
@@ -16,17 +16,17 @@ Authors@R: c(person(given = "John",
 	    	    role = "aut"))
 Description: Functions and data structures for life tables.  Depends on package
     'dembase'. Still under development.
-Depends:
-    dembase
 License: MIT + file LICENSE
 LazyLoad: yes
 LazyData: yes
+Encoding: UTF-8
 Imports:
-    methods
+    methods,
+    dembase
 Suggests:
     datasets,
     demdata,
     testthat,
     knitr
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.1
